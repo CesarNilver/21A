@@ -15,10 +15,11 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background-color: #020208;
+            background: radial-gradient(circle at center, #0B0813 0%, #030206 100%);
             color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             cursor: grab;
+            user-select: none;
         }
 
         body:active {
@@ -29,7 +30,6 @@
             position: relative;
             width: 100vw;
             height: 100vh;
-            overflow: hidden;
         }
 
         canvas {
@@ -38,84 +38,105 @@
             height: 100%;
         }
 
-        /* Indicador visual de control */
+        /* Indicador visual elegante */
         .hint {
             position: absolute;
-            bottom: 20px;
+            bottom: 25px;
             left: 50%;
             transform: translateX(-50%);
-            color: rgba(255, 235, 150, 0.9);
+            color: #FFE082;
             font-size: 13px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 600;
             pointer-events: none;
-            letter-spacing: 1px;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.9);
-            background: rgba(0, 0, 0, 0.5);
-            padding: 6px 16px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 215, 0, 0.3);
+            background: rgba(15, 10, 25, 0.65);
+            padding: 10px 24px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 215, 0, 0.35);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37), 0 0 15px rgba(255, 215, 0, 0.2);
+            backdrop-filter: blur(10px);
             z-index: 10;
+            transition: opacity 0.3s ease;
         }
 
-        /* Modal romántico */
+        /* Modal Romántico Premium */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(3, 2, 8, 0.75);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 100;
-            backdrop-filter: blur(8px);
-            transition: opacity 0.5s ease;
+            backdrop-filter: blur(12px);
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .modal-card {
-            background: linear-gradient(145deg, rgba(30, 18, 5, 0.95), rgba(10, 5, 15, 0.98));
-            border: 2px solid #ffaa00;
-            box-shadow: 0 0 35px rgba(255, 170, 0, 0.6);
-            border-radius: 24px;
-            padding: 35px;
-            max-width: 440px;
-            width: 90%;
+            background: linear-gradient(165deg, rgba(35, 20, 10, 0.85) 0%, rgba(12, 6, 18, 0.95) 100%);
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 40px rgba(255, 180, 0, 0.25);
+            border-radius: 28px;
+            padding: 40px;
+            max-width: 460px;
+            width: 88%;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Resplandor decorativo interno del modal */
+        .modal-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.08) 0%, transparent 60%);
+            pointer-events: none;
         }
 
         .modal-title {
-            font-family: 'Brush Script MT', cursive, sans-serif;
-            font-size: 42px;
-            color: #ffc233;
-            margin-bottom: 18px;
-            text-shadow: 0 0 12px rgba(255, 194, 51, 0.6);
+            font-family: 'Georgia', 'Brush Script MT', cursive, serif;
+            font-size: 38px;
+            color: #FFE082;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(255, 224, 130, 0.5);
+            font-weight: normal;
         }
 
         .modal-text {
             font-size: 15px;
-            line-height: 1.6;
-            color: #ebdcd0;
-            margin-bottom: 15px;
+            line-height: 1.7;
+            color: #f1e4d8;
+            margin-bottom: 16px;
             font-style: italic;
+            font-weight: 300;
         }
 
         .modal-btn {
-            background: linear-gradient(135deg, #ff9900, #b35900);
-            color: white;
+            background: linear-gradient(135deg, #FFB300, #FF6F00);
+            color: #ffffff;
             border: none;
-            padding: 11px 32px;
+            padding: 12px 36px;
             font-size: 14px;
             font-weight: 700;
-            border-radius: 20px;
+            letter-spacing: 1px;
+            border-radius: 25px;
             cursor: pointer;
-            margin-top: 10px;
-            box-shadow: 0 0 12px rgba(255, 153, 0, 0.5);
-            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 15px;
+            box-shadow: 0 6px 20px rgba(255, 143, 0, 0.4);
+            transition: all 0.3s ease;
         }
 
         .modal-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(255, 180, 0, 0.8);
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 10px 25px rgba(255, 179, 0, 0.6);
         }
 
         .hidden {
@@ -127,7 +148,7 @@
 
     <div id="universe">
         <canvas id="galaxyCanvas"></canvas>
-        <div class="hint">✨ Arrastra para girar la galaxia 3D de Edel ✨</div>
+        <div class="hint">✨ Arrastra para explorar la galaxia 3D de Edel ✨</div>
     </div>
 
     <!-- Modal emergente -->
@@ -136,8 +157,8 @@
             <h1 class="modal-title">Mi Amor...</h1>
             <p class="modal-text">Eres la coincidencia más hermosa que me pudo pasar.</p>
             <p class="modal-text">Así como estas flores y estrellas iluminan la inmensidad, tu sonrisa ilumina cada uno de mis días.</p>
-            <p class="modal-text"><strong>¡Feliz Día de las Flores Amarillas, Mi Amor!</strong><br>Te amo infinitamente, Edel.</p>
-            <button class="modal-btn" onclick="closeModal()">Cerrar</button>
+            <p class="modal-text"><strong>¡Feliz Día de las Flores Amarillas!</strong><br>Te amo infinitamente, Edel.</p>
+            <button class="modal-btn" onclick="closeModal()">EXPLORAR GALAXIA</button>
         </div>
     </div>
 
@@ -157,9 +178,11 @@
         window.addEventListener('resize', resize);
         resize();
 
-        // --- Controles de Interacción 3D ---
-        let rotX = 0.5;
+        // --- Controles de Interacción 3D Suaves ---
+        let rotX = 0.55;
         let rotY = 0;
+        let targetRotX = 0.55;
+        let targetRotY = 0;
         let isDragging = false;
         let previousMousePosition = { x: 0, y: 0 };
 
@@ -173,9 +196,9 @@
             const deltaX = e.clientX - previousMousePosition.x;
             const deltaY = e.clientY - previousMousePosition.y;
 
-            rotY += deltaX * 0.004;
-            rotX += deltaY * 0.004;
-            rotX = Math.max(0.1, Math.min(Math.PI / 2 - 0.05, rotX));
+            targetRotY += deltaX * 0.003;
+            targetRotX += deltaY * 0.003;
+            targetRotX = Math.max(0.15, Math.min(Math.PI / 2 - 0.05, targetRotX));
 
             previousMousePosition = { x: e.clientX, y: e.clientY };
         });
@@ -192,48 +215,63 @@
             const deltaX = e.touches[0].clientX - previousMousePosition.x;
             const deltaY = e.touches[0].clientY - previousMousePosition.y;
 
-            rotY += deltaX * 0.004;
-            rotX += deltaY * 0.004;
-            rotX = Math.max(0.1, Math.min(Math.PI / 2 - 0.05, rotX));
+            targetRotY += deltaX * 0.003;
+            targetRotX += deltaY * 0.003;
+            targetRotX = Math.max(0.15, Math.min(Math.PI / 2 - 0.05, targetRotX));
 
             previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
         });
 
         window.addEventListener('touchend', () => isDragging = false);
 
-        // --- Generación de Partículas (Estrellas + Puntitos Amarillos) ---
-        const GALAXY_PARTICLES = 6500;
+        // --- Generación de Espirales de Galaxia Reales ---
+        const GALAXY_PARTICLES = 7500;
+        const ARMS = 3; // 3 brazos espirales bien definidos
         const galaxy = [];
 
         for (let i = 0; i < GALAXY_PARTICLES; i++) {
-            const isNucleus = i < 700;
+            const isNucleus = i < 1200;
             let dist, angle, color, size, speed;
 
             if (isNucleus) {
-                dist = Math.pow(Math.random(), 1.5) * 65;
+                dist = Math.pow(Math.random(), 2) * 80;
                 angle = Math.random() * Math.PI * 2;
-                color = `rgba(255, ${220 + Math.floor(Math.random() * 35)}, ${Math.floor(Math.random() * 80)}, ${0.85 + Math.random() * 0.15})`;
-                size = 1.2 + Math.random() * 2.8;
-                speed = 0.0025 + Math.random() * 0.001;
+                
+                // Núcleo cálido radiante
+                const r = 255;
+                const g = Math.floor(220 + Math.random() * 35);
+                const b = Math.floor(140 + Math.random() * 100);
+                color = `rgba(${r}, ${g}, ${b}, ${0.7 + Math.random() * 0.3})`;
+                size = 1.0 + Math.random() * 2.5;
+                speed = 0.0015 + Math.random() * 0.001;
             } else {
-                angle = Math.random() * Math.PI * 4;
-                dist = 50 + Math.pow(Math.random(), 1.3) * (Math.min(width, height) * 0.52);
+                // Brazos Espirales Logarítmicos
+                const armIndex = i % ARMS;
+                const armOffset = (armIndex * 2 * Math.PI) / ARMS;
+                
+                const distanceFactor = Math.random();
+                dist = 60 + Math.pow(distanceFactor, 1.2) * (Math.min(width, height) * 0.55);
+                
+                // Rotación logarítmica para formar espiral
+                const spiralAngle = Math.log(dist / 40) * 2.2;
+                angle = spiralAngle + armOffset + (Math.random() - 0.5) * 0.65; // Desviación para naturalidad
 
-                const isGoldYellow = Math.random() < 0.75;
+                const isGoldYellow = Math.random() < 0.8;
                 if (isGoldYellow) {
                     const r = 255;
-                    const g = Math.floor(180 + Math.random() * 75);
-                    const b = Math.floor(Math.random() * 50);
-                    color = `rgba(${r}, ${g}, ${b}, ${0.4 + Math.random() * 0.55})`;
-                    size = 0.9 + Math.random() * 2.2;
+                    const g = Math.floor(190 + Math.random() * 65);
+                    const b = Math.floor(Math.random() * 60);
+                    color = `rgba(${r}, ${g}, ${b}, ${0.35 + Math.random() * 0.55})`;
+                    size = 0.8 + Math.random() * 2.2;
                 } else {
-                    const r = Math.floor(180 + Math.random() * 75);
-                    const g = Math.floor(50 + Math.random() * 100);
+                    // Chispas violetas / celestes de fondo
+                    const r = Math.floor(160 + Math.random() * 95);
+                    const g = Math.floor(100 + Math.random() * 100);
                     const b = 255;
-                    color = `rgba(${r}, ${g}, ${b}, ${0.3 + Math.random() * 0.5})`;
-                    size = 0.7 + Math.random() * 1.5;
+                    color = `rgba(${r}, ${g}, ${b}, ${0.25 + Math.random() * 0.45})`;
+                    size = 0.6 + Math.random() * 1.5;
                 }
-                speed = 0.0008 + (120 / (dist + 60)) * 0.0006;
+                speed = 0.0004 + (140 / (dist + 50)) * 0.0004;
             }
 
             galaxy.push({
@@ -246,7 +284,7 @@
             });
         }
 
-        // --- Lista de Palabras Exactas ---
+        // --- Lista de Palabras ---
         const words = [
             "Mi sol", "Mi amor", "Mi destino", "Mi cielo", "Esperanza", 
             "Libertad", "Felicidad", "Pasión", "Reina", "Mi razón", 
@@ -254,30 +292,41 @@
             "Mi calma", "Mi universo", "Dulzura", "Ternura", "Mi fiesta"
         ];
 
-        // Posiciones orbitales para las etiquetas
         const totalItems = words.length;
         const floatingItems = words.map((word, index) => {
-            const angle = (index / totalItems) * Math.PI * 2 + Math.random() * 0.2;
-            const dist = 140 + Math.random() * (Math.min(width, height) * 0.32);
+            const armIndex = index % ARMS;
+            const armOffset = (armIndex * 2 * Math.PI) / ARMS;
+            const dist = 120 + (index / totalItems) * (Math.min(width, height) * 0.38);
+            const angle = Math.log(dist / 40) * 2.2 + armOffset;
+
             return {
                 word: word,
                 dist: dist,
                 angle: angle,
-                radius: 18 + Math.random() * 6,
+                radius: 16 + Math.random() * 6,
                 isHighlight: index % 3 === 0
             };
         });
 
-        // --- Función para Dibujar Girasoles Realistas ---
+        // --- Dibujar Girasol Estilizado Radiante ---
         function drawRealisticSunflower(x, y, radius) {
             ctx.save();
             ctx.translate(x, y);
 
+            // Resplandor dorado de la flor
+            const glow = ctx.createRadialGradient(0, 0, radius * 0.2, 0, 0, radius * 1.6);
+            glow.addColorStop(0, 'rgba(255, 215, 0, 0.35)');
+            glow.addColorStop(1, 'rgba(255, 140, 0, 0)');
+            ctx.beginPath();
+            ctx.arc(0, 0, radius * 1.6, 0, Math.PI * 2);
+            ctx.fillStyle = glow;
+            ctx.fill();
+
             // Capas de pétalos
             const petalLayers = [
-                { count: 16, lenRatio: 1.2, widthRatio: 0.32, color: '#D97706' }, // Pétalos traseros oscuros
-                { count: 18, lenRatio: 1.0, widthRatio: 0.30, color: '#FBBF24' }, // Capa media brillante
-                { count: 14, lenRatio: 0.8, widthRatio: 0.28, color: '#FEF08A' }  // Capa interna clara
+                { count: 16, lenRatio: 1.25, widthRatio: 0.3, color: '#D97706' },
+                { count: 16, lenRatio: 1.05, widthRatio: 0.28, color: '#FBBF24' },
+                { count: 12, lenRatio: 0.85, widthRatio: 0.25, color: '#FEF08A' }
             ];
 
             petalLayers.forEach((layer, layerIdx) => {
@@ -291,38 +340,35 @@
                     const pLen = radius * layer.lenRatio;
                     const pWidth = radius * layer.widthRatio;
 
-                    ctx.moveTo(0, -radius * 0.3);
-                    ctx.bezierCurveTo(-pWidth, -radius * 0.6, -pWidth * 0.8, -pLen, 0, -pLen * 1.1);
-                    ctx.bezierCurveTo(pWidth * 0.8, -pLen, pWidth, -radius * 0.6, 0, -radius * 0.3);
+                    ctx.moveTo(0, -radius * 0.25);
+                    ctx.bezierCurveTo(-pWidth, -radius * 0.5, -pWidth * 0.8, -pLen, 0, -pLen * 1.1);
+                    ctx.bezierCurveTo(pWidth * 0.8, -pLen, pWidth, -radius * 0.5, 0, -radius * 0.25);
 
                     ctx.fillStyle = layer.color;
-                    ctx.shadowColor = '#D97706';
-                    ctx.shadowBlur = 4;
                     ctx.fill();
                     ctx.restore();
                 }
             });
 
-            // Centro oscuro en espiral de semillas
-            const centerRadius = radius * 0.42;
+            // Centro detallado
+            const centerRadius = radius * 0.38;
             ctx.beginPath();
             ctx.arc(0, 0, centerRadius, 0, Math.PI * 2);
-            ctx.fillStyle = '#2A1508';
-            ctx.shadowColor = '#000000';
-            ctx.shadowBlur = 6;
+            ctx.fillStyle = '#2A1205';
             ctx.fill();
 
-            const seedCount = 40;
+            // Semillas en espiral dorada
+            const seedCount = 35;
             const goldenAngle = 137.5 * (Math.PI / 180);
             for (let i = 0; i < seedCount; i++) {
-                const r = Math.sqrt(i / seedCount) * (centerRadius * 0.85);
+                const r = Math.sqrt(i / seedCount) * (centerRadius * 0.82);
                 const theta = i * goldenAngle;
                 const sX = r * Math.cos(theta);
                 const sY = r * Math.sin(theta);
 
                 ctx.beginPath();
-                ctx.arc(sX, sY, radius * 0.038, 0, Math.PI * 2);
-                ctx.fillStyle = i % 2 === 0 ? '#5C3317' : '#8B4513';
+                ctx.arc(sX, sY, radius * 0.04, 0, Math.PI * 2);
+                ctx.fillStyle = i % 2 === 0 ? '#8B4513' : '#D97706';
                 ctx.fill();
             }
 
@@ -333,23 +379,29 @@
         let pulseTime = 0;
 
         function animate() {
-            ctx.fillStyle = '#020208';
+            // Animación suave del cursor / arrastre (Inercia)
+            rotX += (targetRotX - rotX) * 0.05;
+            rotY += (targetRotY - rotY) * 0.05;
+
+            // Limpieza con sutil fondo estelar profundo
+            ctx.fillStyle = '#030206';
             ctx.fillRect(0, 0, width, height);
 
-            pulseTime += 0.03;
+            pulseTime += 0.025;
 
             // 1. Dibujar Partículas de la Galaxia
             galaxy.forEach(p => {
                 p.angle += p.speed;
-                p.twinkle += 0.05;
+                p.twinkle += 0.04;
 
-                const rawX = Math.cos(p.angle + rotY) * p.dist;
-                const rawY = Math.sin(p.angle + rotY) * p.dist;
+                const currentAngle = p.angle + rotY;
+                const rawX = Math.cos(currentAngle) * p.dist;
+                const rawY = Math.sin(currentAngle) * p.dist;
 
                 const screenX = centerX + rawX;
                 const screenY = centerY + rawY * Math.sin(rotX);
 
-                const twinkleAlpha = 0.7 + Math.sin(p.twinkle) * 0.3;
+                const twinkleAlpha = 0.6 + Math.sin(p.twinkle) * 0.4;
 
                 ctx.beginPath();
                 ctx.arc(screenX, screenY, p.size, 0, Math.PI * 2);
@@ -359,22 +411,25 @@
                 ctx.globalAlpha = 1.0;
             });
 
-            // 2. Núcleo Resplandeciente
-            const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 85);
-            gradient.addColorStop(0, 'rgba(255, 255, 240, 1)');
-            gradient.addColorStop(0.2, 'rgba(255, 215, 0, 0.9)');
-            gradient.addColorStop(0.55, 'rgba(255, 140, 0, 0.4)');
+            // 2. Núcleo Galáctico Resplandeciente y Multicapa
+            const coreRadius = 110;
+            const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, coreRadius);
+            gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+            gradient.addColorStop(0.15, 'rgba(255, 230, 150, 0.9)');
+            gradient.addColorStop(0.4, 'rgba(255, 160, 20, 0.45)');
+            gradient.addColorStop(0.7, 'rgba(255, 100, 0, 0.15)');
             gradient.addColorStop(1, 'transparent');
 
             ctx.beginPath();
-            ctx.arc(centerX, centerY, 85, 0, Math.PI * 2);
+            ctx.arc(centerX, centerY, coreRadius, 0, Math.PI * 2);
             ctx.fillStyle = gradient;
             ctx.fill();
 
-            // 3. Dibujar Girasoles con sus Etiquetas
+            // 3. Dibujar Girasoles y Etiquetas Románticas
             floatingItems.forEach(f => {
-                const floatY = Math.sin(pulseTime + f.dist) * 6;
+                const floatY = Math.sin(pulseTime + f.dist) * 5;
 
+                f.angle += 0.0004; // Rotación sutil con la galaxia
                 const currentAngle = f.angle + rotY;
                 const rawX = Math.cos(currentAngle) * f.dist;
                 const rawY = Math.sin(currentAngle) * f.dist;
@@ -382,38 +437,38 @@
                 const screenX = centerX + rawX;
                 const screenY = centerY + rawY * Math.sin(rotX) + floatY;
 
-                // Dibujar girasol
-                drawRealisticSunflower(screenX - 35, screenY, f.radius);
+                // Dibujar la flor
+                drawRealisticSunflower(screenX - 32, screenY, f.radius);
 
-                // Dibujar etiqueta de texto
+                // Dibujar etiqueta estilizada de Cristal / Neón
                 ctx.save();
-                ctx.font = f.isHighlight ? "bold 15px 'Segoe UI', sans-serif" : "bold 13px 'Segoe UI', sans-serif";
+                ctx.font = f.isHighlight ? "600 14px 'Segoe UI', sans-serif" : "500 12px 'Segoe UI', sans-serif";
 
                 const textWidth = ctx.measureText(f.word).width;
                 const paddingX = 14;
-                const paddingY = 6;
                 const rectX = screenX;
-                const rectY = screenY - 12;
+                const rectY = screenY - 11;
                 const rectWidth = textWidth + paddingX * 2;
-                const rectHeight = 24;
+                const rectHeight = 22;
 
-                // Fondo de la etiqueta
+                // Fondo traslúcido con efecto cristal
                 ctx.beginPath();
-                ctx.roundRect(rectX, rectY, rectWidth, rectHeight, 12);
-                ctx.fillStyle = 'rgba(10, 8, 5, 0.88)';
+                ctx.roundRect(rectX, rectY, rectWidth, rectHeight, 11);
+                ctx.fillStyle = 'rgba(12, 8, 20, 0.75)';
                 ctx.fill();
 
-                // Borde dorado
-                ctx.strokeStyle = f.isHighlight ? '#ffee77' : '#ffcc00';
-                ctx.lineWidth = f.isHighlight ? 2 : 1.5;
-                ctx.shadowColor = '#ffcc00';
-                ctx.shadowBlur = f.isHighlight ? 12 : 6;
+                // Borde neón dorado
+                ctx.strokeStyle = f.isHighlight ? 'rgba(255, 230, 120, 0.9)' : 'rgba(255, 190, 40, 0.6)';
+                ctx.lineWidth = f.isHighlight ? 1.5 : 1;
+                ctx.shadowColor = 'rgba(255, 200, 0, 0.5)';
+                ctx.shadowBlur = f.isHighlight ? 10 : 4;
                 ctx.stroke();
 
-                // Texto
-                ctx.fillStyle = '#ffffff';
-                ctx.shadowBlur = 4;
-                ctx.fillText(f.word, rectX + paddingX, rectY + 16);
+                // Texto con ligero resplandor
+                ctx.fillStyle = '#FFFFFF';
+                ctx.shadowColor = '#FFD700';
+                ctx.shadowBlur = 6;
+                ctx.fillText(f.word, rectX + paddingX, rectY + 15);
 
                 ctx.restore();
             });
@@ -427,7 +482,7 @@
         function closeModal() {
             const modal = document.getElementById('cardModal');
             modal.style.opacity = '0';
-            setTimeout(() => modal.classList.add('hidden'), 500);
+            setTimeout(() => modal.classList.add('hidden'), 600);
         }
     </script>
 </body>
