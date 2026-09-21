@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universo de Amor - Edel</title>
+    <title>Universo de Girasoles - Edel</title>
     <style>
         * {
             margin: 0;
@@ -31,18 +31,18 @@
             bottom: 15px;
             left: 50%;
             transform: translateX(-50%);
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255, 235, 150, 0.8);
             font-size: 13px;
             pointer-events: none;
             letter-spacing: 1px;
-            text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.8);
         }
     </style>
 </head>
 <body>
 
 <canvas id="spaceCanvas"></canvas>
-<div class="hint">✨ Arrastra con el mouse para girar la galaxia ✨</div>
+<div class="hint">✨ Arrastra para girar la galaxia de girasoles ✨</div>
 
 <script>
 const canvas = document.getElementById('spaceCanvas');
@@ -105,28 +105,28 @@ window.addEventListener('touchmove', (e) => {
 window.addEventListener('touchend', () => isDragging = false);
 
 // --- Generación de Partículas ---
-const GALAXY_PARTICLES = 4500;
-const HEART_PARTICLES = 1800;
+const GALAXY_PARTICLES = 5000;
+const HEART_PARTICLES = 2000;
 
 const galaxy = [];
 for (let i = 0; i < GALAXY_PARTICLES; i++) {
-    const isNucleus = i < 400;
+    const isNucleus = i < 500;
     let dist, angle, color, size;
 
     if (isNucleus) {
-        dist = Math.random() * 45;
+        dist = Math.random() * 50;
         angle = Math.random() * Math.PI * 2;
-        color = `rgba(255, ${200 + Math.random() * 55}, ${Math.random() * 100}, ${0.8 + Math.random() * 0.2})`;
-        size = 1.5 + Math.random() * 2;
+        color = `rgba(255, ${215 + Math.floor(Math.random() * 40)}, ${Math.floor(Math.random() * 100)}, ${0.8 + Math.random() * 0.2})`;
+        size = 1.5 + Math.random() * 2.5;
     } else {
         angle = Math.random() * Math.PI * 4;
-        dist = 40 + Math.pow(Math.random(), 1.5) * (Math.min(width, height) * 0.45);
+        dist = 45 + Math.pow(Math.random(), 1.4) * (Math.min(width, height) * 0.48);
         
-        const r = Math.floor(150 + Math.random() * 105);
-        const g = Math.floor(20 + Math.random() * 80);
-        const b = Math.floor(200 + Math.random() * 55);
-        color = `rgba(${r}, ${g}, ${b}, ${0.4 + Math.random() * 0.5})`;
-        size = 0.8 + Math.random() * 1.5;
+        const r = 255;
+        const g = Math.floor(180 + Math.random() * 75);
+        const b = Math.floor(Math.random() * 60);
+        color = `rgba(${r}, ${g}, ${b}, ${0.35 + Math.random() * 0.55})`;
+        size = 0.8 + Math.random() * 1.8;
     }
 
     galaxy.push({
@@ -152,75 +152,104 @@ for (let i = 0; i < HEART_PARTICLES; i++) {
         baseX: x,
         baseY: y,
         size: 1 + Math.random() * 2,
-        color: `rgba(255, ${Math.floor(20 + Math.random() * 100)}, ${Math.floor(180 + Math.random() * 75)}, `,
+        color: `rgba(255, ${Math.floor(190 + Math.random() * 65)}, ${Math.floor(Math.random() * 50)}, `,
         alpha: 0.6 + Math.random() * 0.4
     });
 }
 
-// Convertimos notas y flores a coordenadas polares
-const floatersRaw = [
-    { type: 'text', text: 'MI CORAZÓN ES TUYO', x: -380, y: 30, color: '#FFFFFF', size: 16 },
-    { type: 'text', text: 'CONTIGO SIEMPRE', x: -200, y: 80, color: '#FFFFFF', size: 15 },
-    { type: 'text', text: 'SIEMPRE JUNTOS', x: -420, y: 160, color: '#FFFFFF', size: 22 },
-    { type: 'text', text: 'AMOR ETERNO ✨', x: -120, y: -80, color: '#FFB6C1', size: 11 },
-    { type: 'text', text: 'INFINITO ∞', x: 80, y: -70, color: '#FFFFFF', size: 12 },
-    { type: 'text', text: 'CONTIGO SIEMPRE', x: 220, y: -40, color: '#FFB6C1', size: 13 },
-    { type: 'text', text: 'Vengo a recordar\npor si se te olvida', x: 200, y: 30, color: '#E0E0E0', size: 11 },
-    { type: 'text', text: 'MI CORAZÓN ES TUYO', x: 380, y: 80, color: '#FFFFFF', size: 18 },
-    { type: 'text', text: 'INFINITO ∞', x: -50, y: 260, color: '#FFFFFF', size: 28 },
-    
-    { type: 'icon', x: -260, y: -20, radius: 28, text: 'te amo' },
-    { type: 'icon', x: 180, y: 90, radius: 38, text: 'te amo ❤️' },
-    { type: 'icon', x: 310, y: 80, radius: 26, text: 'te amo' },
-
-    // --- BASTANTES FLORES AMARILLAS CON FRASES ---
-    { type: 'flower', x: -310, y: -140, radius: 14, phrase: 'Eres mi sol en días nublados 🌻' },
-    { type: 'flower', x: -180, y: -220, radius: 16, phrase: 'Flores amarillas para el amor de mi vida 💛' },
-    { type: 'flower', x: 150, y: -210, radius: 15, phrase: 'Tu sonrisa ilumina mi universo ✨' },
-    { type: 'flower', x: 330, y: -120, radius: 14, phrase: 'Haces que todo valga la pena' },
-    { type: 'flower', x: -340, y: -30, radius: 12, phrase: 'Para la chica más linda del mundo 🌼' },
-    { type: 'flower', x: 320, y: -20, radius: 16, phrase: 'Mi lugar favorito es a tu lado' },
-    { type: 'flower', x: -290, y: 110, radius: 15, phrase: 'Eres la casualidad más bonita' },
-    { type: 'flower', x: 110, y: 140, radius: 13, phrase: 'Cada día te amo un poco más 💛' },
-    { type: 'flower', x: -140, y: 190, radius: 14, phrase: 'Gracias por existir, mi amor' },
-    { type: 'flower', x: 280, y: 180, radius: 15, phrase: 'Un detalle amarillo para tu hermoso corazón' },
-    { type: 'flower', x: -230, y: 240, radius: 13, phrase: 'Eres mi sueño hecho realidad 🌻' },
-    { type: 'flower', x: 160, y: 250, radius: 14, phrase: 'Juntos por siempre' }
+// --- GIRASOLES REALISTAS Y MÁS FRASES PARA EDEL ---
+const sunflowersRaw = [
+    { x: -330, y: -160, radius: 24, phrase: 'Eres mi sol en cada mañana 🌻' },
+    { x: -180, y: -240, radius: 22, phrase: 'Flores amarillas para el amor de mi vida 💛' },
+    { x: 160, y: -230, radius: 25, phrase: 'Tu sonrisa ilumina todo mi universo ✨' },
+    { x: 340, y: -130, radius: 21, phrase: 'Contigo cada segundo vale la pena' },
+    { x: -380, y: -30, radius: 20, phrase: 'Para la chica más hermosa del mundo 🌼' },
+    { x: 350, y: -20, radius: 26, phrase: 'Mi lugar favorito siempre será a tu lado' },
+    { x: -320, y: 110, radius: 23, phrase: 'Eres mi casualidad más bonita 💛' },
+    { x: 120, y: 140, radius: 22, phrase: 'Cada día te amo un poco más, Edel' },
+    { x: -160, y: 190, radius: 20, phrase: 'Gracias por llenar mi vida de luz 🌻' },
+    { x: 290, y: 180, radius: 24, phrase: 'Un mar de girasoles para tu lindo corazón' },
+    { x: -260, y: 240, radius: 22, phrase: 'Eres mi sueño hecho realidad ✨' },
+    { x: 180, y: 260, radius: 25, phrase: 'Juntos hoy, mañana y siempre' },
+    { x: -110, y: -130, radius: 19, phrase: 'Tú haces mi mundo más bonito 💛' },
+    { x: 80, y: -140, radius: 21, phrase: 'Tu amor hace florecer mi alma 🌻' },
+    { x: -410, y: 70, radius: 20, phrase: 'Amo la luz de tus ojitos' },
+    { x: 400, y: 80, radius: 22, phrase: 'No hay nadie en el mundo como tú ✨' },
+    { x: 0, y: 290, radius: 26, phrase: 'Eres mi regalo más preciado del universo 💛' }
 ];
 
-const floaters = floatersRaw.map(f => {
+const floaters = sunflowersRaw.map(f => {
     const dist = Math.sqrt(f.x * f.x + f.y * f.y);
     const angle = Math.atan2(f.y, f.x);
     return { ...f, dist, angle };
 });
 
-// Función para dibujar flores amarillas
-function drawYellowFlower(x, y, radius) {
-    const petals = 6;
+// Dibujar un girasol realista con capas de pétalos y semillas
+function drawRealisticSunflower(x, y, radius) {
     ctx.save();
     ctx.translate(x, y);
 
-    // Pétalos amarillos
-    ctx.fillStyle = '#FFD700';
-    ctx.shadowColor = '#FFA500';
-    ctx.shadowBlur = 8;
-    for (let i = 0; i < petals; i++) {
-        const angle = (i * Math.PI * 2) / petals;
-        const pX = Math.cos(angle) * (radius * 0.75);
-        const pY = Math.sin(angle) * (radius * 0.75);
-        
+    // 1. Capas externas de pétalos
+    const petalLayers = [
+        { count: 16, lenRatio: 1.15, widthRatio: 0.32, color: '#FFA500' }, // Pétalos traseros oscuros/naranjas
+        { count: 18, lenRatio: 1.0,  widthRatio: 0.30, color: '#FFD700' }, // Capa media brillante
+        { count: 14, lenRatio: 0.82, widthRatio: 0.28, color: '#FFEE55' }  # Capa interna clara
+    ];
+
+    petalLayers.forEach((layer, layerIdx) => {
+        const offset = (layerIdx * Math.PI) / layer.count;
+        for (let i = 0; i < layer.count; i++) {
+            const angle = (i * Math.PI * 2) / layer.count + offset;
+            ctx.save();
+            ctx.rotate(angle);
+
+            ctx.beginPath();
+            const pLen = radius * layer.lenRatio;
+            const pWidth = radius * layer.widthRatio;
+
+            // Forma puntiaguda y suave del pétalo del girasol
+            ctx.moveTo(0, -radius * 0.3);
+            ctx.bezierCurveTo(-pWidth, -radius * 0.6, -pWidth * 0.8, -pLen, 0, -pLen * 1.1);
+            ctx.bezierCurveTo(pWidth * 0.8, -pLen, pWidth, -radius * 0.6, 0, -radius * 0.3);
+
+            ctx.fillStyle = layer.color;
+            ctx.shadowColor = '#FF8C00';
+            ctx.shadowBlur = 4;
+            ctx.fill();
+            ctx.restore();
+        }
+    });
+
+    // 2. Centro oscuro del girasol (Semillas en espiral)
+    const centerRadius = radius * 0.42;
+    ctx.beginPath();
+    ctx.arc(0, 0, centerRadius, 0, Math.PI * 2);
+    ctx.fillStyle = '#2A1508';
+    ctx.shadowColor = '#000000';
+    ctx.shadowBlur = 6;
+    ctx.fill();
+
+    // Textura de semillas en el centro
+    const seedCount = 45;
+    const goldenAngle = 137.5 * (Math.PI / 180);
+    for (let i = 0; i < seedCount; i++) {
+        const r = Math.sqrt(i / seedCount) * (centerRadius * 0.88);
+        const theta = i * goldenAngle;
+        const sX = r * Math.cos(theta);
+        const sY = r * Math.sin(theta);
+
         ctx.beginPath();
-        ctx.arc(pX, pY, radius * 0.55, 0, Math.PI * 2);
+        ctx.arc(sX, sY, radius * 0.038, 0, Math.PI * 2);
+        ctx.fillStyle = i % 2 === 0 ? '#5C3317' : '#8B4513';
         ctx.fill();
     }
 
-    // Centro brillante
+    // Borde brillante en el centro
     ctx.beginPath();
-    ctx.arc(0, 0, radius * 0.45, 0, Math.PI * 2);
-    ctx.fillStyle = '#FF8C00';
-    ctx.shadowColor = '#FF8C00';
-    ctx.shadowBlur = 5;
-    ctx.fill();
+    ctx.arc(0, 0, centerRadius, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(255, 215, 0, 0.4)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
 
     ctx.restore();
 }
@@ -234,7 +263,7 @@ function animate() {
     pulseTime += 0.03;
     const pulse = (Math.sin(pulseTime) + 1) / 2;
 
-    // 1. Dibujar la galaxia
+    // 1. Dibujar la galaxia amarilla/dorada
     galaxy.forEach(p => {
         p.angle += p.speed;
 
@@ -250,19 +279,19 @@ function animate() {
         ctx.fill();
     });
 
-    // 2. Núcleo brillante
-    const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 60);
-    gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
-    gradient.addColorStop(0.2, 'rgba(255, 215, 0, 0.8)');
-    gradient.addColorStop(0.6, 'rgba(255, 105, 180, 0.3)');
+    // 2. Núcleo resplandeciente
+    const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 70);
+    gradient.addColorStop(0, 'rgba(255, 255, 230, 1)');
+    gradient.addColorStop(0.2, 'rgba(255, 215, 0, 0.9)');
+    gradient.addColorStop(0.6, 'rgba(255, 140, 0, 0.4)');
     gradient.addColorStop(1, 'transparent');
 
     ctx.beginPath();
-    ctx.arc(centerX, centerY, 60, 0, Math.PI * 2);
+    ctx.arc(centerX, centerY, 70, 0, Math.PI * 2);
     ctx.fillStyle = gradient;
     ctx.fill();
 
-    // 3. Corazón
+    // 3. Corazón amarillo/dorado
     const currentScale = 1 + pulse * 0.08;
 
     heart.forEach(p => {
@@ -275,23 +304,23 @@ function animate() {
         ctx.fill();
     });
 
-    // Texto EDEL
+    // Texto EDEL en dorado
     const heartCenterY = centerY - 220 * currentScale;
     
     ctx.save();
-    ctx.font = `bold ${32 + pulse * 4}px 'Segoe UI', sans-serif`;
+    ctx.font = `bold ${34 + pulse * 4}px 'Segoe UI', sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     
-    ctx.shadowColor = '#FF1493';
-    ctx.shadowBlur = 20 + pulse * 10;
+    ctx.shadowColor = '#FFD700';
+    ctx.shadowBlur = 25 + pulse * 10;
     ctx.fillStyle = '#FFFFFF';
     ctx.fillText('EDEL', centerX, heartCenterY);
     ctx.restore();
 
-    // 4. Dibujar Elementos Flotantes (Texto, íconos y Flores)
+    // 4. Dibujar Girasoles y Frases
     floaters.forEach(f => {
-        const floatY = Math.sin(pulseTime + f.dist) * 4;
+        const floatY = Math.sin(pulseTime + f.dist) * 5;
 
         const currentAngle = f.angle + rotY;
         const rawX = Math.cos(currentAngle) * f.dist;
@@ -300,59 +329,22 @@ function animate() {
         const screenX = centerX + rawX;
         const screenY = centerY + rawY * Math.sin(rotX) + floatY;
 
-        if (f.type === 'text') {
-            ctx.font = `bold ${f.size}px 'Segoe UI', sans-serif`;
-            ctx.fillStyle = f.color;
-            ctx.textAlign = 'center';
+        drawRealisticSunflower(screenX, screenY, f.radius);
 
-            const lines = f.text.split('\n');
-            lines.forEach((line, index) => {
-                ctx.fillText(line, screenX, screenY + (index * (f.size + 4)));
-            });
-
-        } else if (f.type === 'icon') {
-            ctx.beginPath();
-            ctx.arc(screenX, screenY, f.radius, 0, Math.PI * 2);
-            ctx.fillStyle = '#FFFFFF';
-            ctx.fill();
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = '#333333';
-            ctx.stroke();
-
-            const r = f.radius;
-            ctx.strokeStyle = '#222222';
-            ctx.lineWidth = 1.5;
-
-            ctx.beginPath();
-            ctx.arc(screenX, screenY - r * 0.3, r * 0.22, 0, Math.PI * 2);
-            ctx.stroke();
-
-            ctx.beginPath();
-            ctx.moveTo(screenX, screenY - r * 0.08);
-            ctx.lineTo(screenX, screenY + r * 0.35);
-            ctx.lineTo(screenX - r * 0.4, screenY + r * 0.1);
-            ctx.moveTo(screenX, screenY + r * 0.35);
-            ctx.lineTo(screenX + r * 0.4, screenY + r * 0.1);
-            ctx.stroke();
-
-            ctx.font = `bold ${Math.floor(f.radius * 0.32)}px sans-serif`;
-            ctx.fillStyle = '#111111';
-            ctx.textAlign = 'center';
-            ctx.fillText(f.text, screenX, screenY + r * 0.65);
-
-        } else if (f.type === 'flower') {
-            drawYellowFlower(screenX, screenY, f.radius);
-
-            // Frase bonita debajo de la flor
-            ctx.save();
-            ctx.font = "bold 12px 'Segoe UI', sans-serif";
-            ctx.fillStyle = '#FFF8DC';
-            ctx.shadowColor = '#FFD700';
-            ctx.shadowBlur = 8;
-            ctx.textAlign = 'center';
-            ctx.fillText(f.phrase, screenX, screenY + f.radius + 14);
-            ctx.restore();
-        }
+        // Texto de frase bonita
+        ctx.save();
+        ctx.font = "bold 12px 'Segoe UI', sans-serif";
+        ctx.fillStyle = '#FFFDE7';
+        ctx.shadowColor = '#FF8C00';
+        ctx.shadowBlur = 8;
+        ctx.textAlign = 'center';
+        
+        const lines = f.phrase.split('\n');
+        lines.forEach((line, index) => {
+            ctx.fillText(line, screenX, screenY + f.radius + 16 + (index * 14));
+        });
+        
+        ctx.restore();
     });
 
     requestAnimationFrame(animate);
