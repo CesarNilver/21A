@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flores Amarillas en el Universo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #030305;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #universe {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle at center, rgba(60, 40, 5, 0.4) 0%, rgba(10, 8, 15, 0.9) 60%, rgba(3, 3, 5, 1) 100%);
+            overflow: hidden;
+        }
+
+        /* Canvas para fondo de estrellas animadas */
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* Agujero negro brillante al centro */
+        .black-hole {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 120px;
+            height: 120px;
+            margin-top: -60px;
+            margin-left: -60px;
+            border-radius: 50%;
+            background: #000;
+            box-shadow: 0 0 25px 12px #ff4500, 
+                        0 0 60px 30px #ffa500, 
+                        0 0 100px 50px #ffdd00;
+            z-index: 10;
+            animation: pulseGlow 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(0.98); box-shadow: 0 0 20px 10px #ff3300, 0 0 50px 25px #ffaa00, 0 0 90px 45px #ffdd00; }
+            100% { transform: scale(1.02); box-shadow: 0 0 30px 15px #ff5500, 0 0 70px 35px #ffcc00, 0 0 110px 55px #ffee00; }
+        }
+
+        /* Elementos flotantes armoniosos */
+        .floating-item {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            pointer-events: none;
+            user-select: none;
+            white-space: nowrap;
+            z-index: 5;
+            transition: transform 0.3s ease;
+        }
+
+        /* Icono SVG de Girasol estilizado */
+        .sunflower-svg {
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+            filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.85));
+        }
+
+        /* Etiquetas de texto estéticas */
+        .tag-text {
+            background: rgba(15, 10, 5, 0.75);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #fff9e6;
+            text-shadow: 0 0 6px #ffcc00;
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            backdrop-filter: blur(4px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .tag-text.highlight {
+            font-size: 17px;
+            font-weight: 700;
+            color: #ffffff;
+            border: 1px solid rgba(255, 230, 100, 0.8);
+            text-shadow: 0 0 10px #ffe600, 0 0 20px #ff8800;
+            background: rgba(35, 20, 5, 0.85);
+        }
+
+        /* Modal con dedicatoria */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.82);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-card {
+            background: linear-gradient(145deg, rgba(25, 12, 18, 0.95), rgba(10, 5, 10, 0.98));
+            border: 2px solid #ff4433;
+            box-shadow: 0 0 30px rgba(255, 68, 51, 0.5);
+            border-radius: 24px;
+            padding: 35px;
+            max-width: 440px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal-title {
+            font-family: 'Brush Script MT', cursive, sans-serif;
+            font-size: 42px;
+            color: #ffb733;
+            margin-bottom: 18px;
+            text-shadow: 0 0 12px rgba(255, 183, 51, 0.6);
+        }
+
+        .modal-text {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #ebdcd0;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .modal-btn {
+            background: linear-gradient(135deg, #ff3333, #b30000);
+            color: white;
+            border: none;
+            padding: 11px 32px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 0 12px rgba(255, 51, 51, 0.5);
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .modal-btn:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, #ff5555, #cc0000);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="universe">
+        <canvas id="starsCanvas"></canvas>
+        <div class="black-hole"></div>
+    </div>
+
+    <div class="modal-overlay" id="cardModal">
+        <div class="modal-card">
+            <h1 class="modal-title">Mi Amor...</h1>
+            <p class="modal-text">Eres la coincidencia más hermosa que me pudo pasar.</p>
+            <p class="modal-text">Así como estas flores y estrellas iluminan la inmensidad, tu sonrisa ilumina cada uno de mis días.</p>
+            <p class="modal-text"><strong>¡Feliz Día de las Flores Amarillas, Mi Amor!</strong><br>Te amo infinitamente.</p>
+            <button class="modal-btn" onclick="closeModal()">Cerrar</button>
+        </div>
+    </div>
+
+    <script>
+        const universe = document.getElementById('universe');
+        const canvas = document.getElementById('starsCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Estrellas de fondo animadas
+        const stars = [];
+        for (let i = 0; i < 150; i++) {
+            stars.push({
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+                size: Math.random() * 1.8 + 0.5,
+                alpha: Math.random(),
+                speed: Math.random() * 0.015 + 0.005
+            });
+        }
+
+        function animateStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(star => {
+                star.alpha += star.speed;
+                if (star.alpha > 1 || star.alpha < 0) star.speed = -star.speed;
+                ctx.fillStyle = `rgba(255, 230, 150, ${Math.abs(star.alpha)})`;
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            requestAnimationFrame(animateStars);
+        }
+        animateStars();
+
+        // Lista de frases
+        const words = [
+            "Mi sol", "Mi amor", "Mi destino", "Mi cielo", "Esperanza", 
+            "Libertad", "Felicidad", "Pasión", "Reina", "Mi razón", 
+            "Eternidad", "Brillas", "Sueños", "Mi flor", "Contigo", 
+            "Mi calma", "Mi universo", "Dulzura", "Ternura", "Mi fiesta"
+        ];
+
+        // Generador SVG de Girasol Realista
+        function getSunflowerSVG() {
+            return `
+            <svg class="sunflower-svg" viewBox="0 0 100 100">
+                <g fill="#ffcc00">
+                    <ellipse cx="50" cy="12" rx="6" ry="16"/>
+                    <ellipse cx="50" cy="88" rx="6" ry="16"/>
+                    <ellipse cx="12" cy="50" rx="16" ry="6"/>
+                    <ellipse cx="88" cy="50" rx="16" ry="6"/>
+                    <ellipse cx="23" cy="23" rx="7" ry="16" transform="rotate(-45 23 23)"/>
+                    <ellipse cx="77" cy="77" rx="7" ry="16" transform="rotate(-45 77 77)"/>
+                    <ellipse cx="23" cy="77" rx="7" ry="16" transform="rotate(45 23 77)"/>
+                    <ellipse cx="77" cy="23" rx="7" ry="16" transform="rotate(45 77 23)"/>
+                </g>
+                <g fill="#ffa500">
+                    <ellipse cx="50" cy="18" rx="5" ry="14"/>
+                    <ellipse cx="50" cy="82" rx="5" ry="14"/>
+                    <ellipse cx="18" cy="50" rx="14" ry="5"/>
+                    <ellipse cx="82" cy="50" rx="14" ry="5"/>
+                </g>
+                <circle cx="50" cy="50" r="18" fill="#3a1e05"/>
+                <circle cx="50" cy="50" r="14" fill="#241102"/>
+            </svg>`;
+        }
+
+        // Evitar superposiciones (Grid con posiciones seguras)
+        const totalItems = 32;
+        const placedPositions = [];
+        const minDistance = 90; // Distancia mínima entre elementos
+
+        for (let i = 0; i < totalItems; i++) {
+            let posX, posY, valid = false, attempts = 0;
+
+            while (!valid && attempts < 100) {
+                attempts++;
+                posX = Math.random() * 82 + 5; // Porcentaje de pantalla
+                posY = Math.random() * 82 + 5;
+
+                // Evitar el centro (donde está el agujero negro)
+                const distFromCenter = Math.hypot(posX - 50, posY - 50);
+                if (distFromCenter < 18) continue;
+
+                // Evitar solapamiento con otros elementos
+                valid = true;
+                for (const pos of placedPositions) {
+                    const dist = Math.hypot(
+                        (posX - pos.x) * (window.innerWidth / 100), 
+                        (posY - pos.y) * (window.innerHeight / 100)
+                    );
+                    if (dist < minDistance) {
+                        valid = false;
+                        break;
+                    }
+                }
+            }
+
+            if (valid) {
+                placedPositions.push({ x: posX, y: posY });
+
+                const item = document.createElement('div');
+                item.className = 'floating-item';
+
+                const word = words[Math.floor(Math.random() * words.length)];
+                const isHighlight = Math.random() < 0.25;
+
+                item.innerHTML = `
+                    ${getSunflowerSVG()}
+                    <span class="tag-text ${isHighlight ? 'highlight' : ''}">${word}</span>
+                `;
+
+                const scale = 0.75 + Math.random() * 0.5;
+                item.style.left = `${posX}vw`;
+                item.style.top = `${posY}vh`;
+                item.style.transform = `scale(${scale})`;
+
+                universe.appendChild(item);
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('cardModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
