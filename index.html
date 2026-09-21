@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galaxia de Flores Amarillas</title>
+    <title>Galaxia de Flores Amarillas - Edel</title>
     <style>
         * {
             margin: 0;
@@ -15,9 +15,14 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background-color: #000000;
+            background-color: #020208;
             color: #ffffff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            cursor: grab;
+        }
+
+        body:active {
+            cursor: grabbing;
         }
 
         #universe {
@@ -25,99 +30,30 @@
             width: 100vw;
             height: 100vh;
             overflow: hidden;
-            background: #000000;
         }
 
-        /* Disco Galáctico Inclinado Fijo (Perspectiva exacta de la captura) */
-        #galaxy-disk {
-            position: absolute;
-            top: 35%;
-            left: -20%;
-            width: 140%;
-            height: 120%;
-            background: radial-gradient(ellipse at center, 
-                        rgba(255, 140, 0, 0.9) 0%, 
-                        rgba(180, 50, 0, 0.7) 12%, 
-                        rgba(80, 20, 120, 0.85) 30%, 
-                        rgba(40, 10, 80, 0.95) 55%, 
-                        rgba(5, 2, 15, 1) 80%);
-            border-radius: 50%;
-            transform: rotateX(78deg) rotateZ(-3deg);
-            transform-origin: center center;
-            box-shadow: 0 0 80px rgba(180, 50, 200, 0.4);
-        }
-
-        /* Agujero negro central con resplandor dorado */
-        .black-hole {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 120px;
-            height: 120px;
-            margin-top: -60px;
-            margin-left: -60px;
-            border-radius: 50%;
-            background: #000000;
-            box-shadow: 0 0 20px 8px #ffffff,
-                        0 0 45px 18px #ff9900,
-                        0 0 80px 35px #ff3300;
-            z-index: 10;
-        }
-
-        /* Canvas de estrellas en el disco */
         canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
+            display: block;
             width: 100%;
             height: 100%;
-            border-radius: 50%;
         }
 
-        /* Elementos flotantes de girasoles y etiquetas */
-        .floating-item {
+        /* Indicador visual de control */
+        .hint {
             position: absolute;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 235, 150, 0.9);
+            font-size: 13px;
             pointer-events: none;
-            user-select: none;
-            white-space: nowrap;
-            z-index: 20;
-        }
-
-        /* Girasol estilizado identico a la captura */
-        .sunflower-container {
-            position: relative;
-            width: 52px;
-            height: 52px;
-            flex-shrink: 0;
-            filter: drop-shadow(0 0 10px rgba(255, 200, 0, 0.9));
-        }
-
-        .sunflower-svg {
-            width: 100%;
-            height: 100%;
-        }
-
-        /* Etiqueta de texto con borde dorado y resplandor */
-        .tag-text {
-            background: rgba(10, 8, 5, 0.88);
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.9);
+            background: rgba(0, 0, 0, 0.5);
             padding: 6px 16px;
             border-radius: 20px;
-            font-size: 15px;
-            font-weight: 700;
-            color: #ffffff;
-            border: 1.5px solid #ffcc00;
-            box-shadow: 0 0 12px rgba(255, 204, 0, 0.6);
-            text-shadow: 0 0 8px #ffcc00;
-        }
-
-        .tag-text.highlight {
-            font-size: 18px;
-            font-weight: 800;
-            border: 2px solid #ffee77;
-            box-shadow: 0 0 18px rgba(255, 238, 119, 0.85);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            z-index: 10;
         }
 
         /* Modal romántico */
@@ -133,12 +69,13 @@
             align-items: center;
             z-index: 100;
             backdrop-filter: blur(8px);
+            transition: opacity 0.5s ease;
         }
 
         .modal-card {
-            background: linear-gradient(145deg, rgba(30, 15, 10, 0.95), rgba(10, 5, 15, 0.98));
+            background: linear-gradient(145deg, rgba(30, 18, 5, 0.95), rgba(10, 5, 15, 0.98));
             border: 2px solid #ffaa00;
-            box-shadow: 0 0 30px rgba(255, 170, 0, 0.5);
+            box-shadow: 0 0 35px rgba(255, 170, 0, 0.6);
             border-radius: 24px;
             padding: 35px;
             max-width: 440px;
@@ -151,6 +88,7 @@
             font-size: 42px;
             color: #ffc233;
             margin-bottom: 18px;
+            text-shadow: 0 0 12px rgba(255, 194, 51, 0.6);
         }
 
         .modal-text {
@@ -172,6 +110,12 @@
             cursor: pointer;
             margin-top: 10px;
             box-shadow: 0 0 12px rgba(255, 153, 0, 0.5);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .modal-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 180, 0, 0.8);
         }
 
         .hidden {
@@ -182,10 +126,8 @@
 <body>
 
     <div id="universe">
-        <div id="galaxy-disk">
-            <canvas id="starsCanvas"></canvas>
-            <div class="black-hole"></div>
-        </div>
+        <canvas id="galaxyCanvas"></canvas>
+        <div class="hint">✨ Arrastra para girar la galaxia 3D de Edel ✨</div>
     </div>
 
     <!-- Modal emergente -->
@@ -194,66 +136,117 @@
             <h1 class="modal-title">Mi Amor...</h1>
             <p class="modal-text">Eres la coincidencia más hermosa que me pudo pasar.</p>
             <p class="modal-text">Así como estas flores y estrellas iluminan la inmensidad, tu sonrisa ilumina cada uno de mis días.</p>
-            <p class="modal-text"><strong>¡Feliz Día de las Flores Amarillas, Mi Amor!</strong><br>Te amo infinitamente.</p>
+            <p class="modal-text"><strong>¡Feliz Día de las Flores Amarillas, Mi Amor!</strong><br>Te amo infinitamente, Edel.</p>
             <button class="modal-btn" onclick="closeModal()">Cerrar</button>
         </div>
     </div>
 
     <script>
-        const universe = document.getElementById('universe');
-        const disk = document.getElementById('galaxy-disk');
-        const canvas = document.getElementById('starsCanvas');
+        const canvas = document.getElementById('galaxyCanvas');
         const ctx = canvas.getContext('2d');
 
-        function resizeCanvas() {
-            canvas.width = disk.clientWidth;
-            canvas.height = disk.clientHeight;
-        }
-        resizeCanvas();
+        let width, height, centerX, centerY;
 
-        /* Dibujar estrellas en el disco plano */
-        for (let i = 0; i < 1800; i++) {
-            const x = Math.random() * canvas.width;
-            const y = Math.random() * canvas.height;
-            const size = Math.random() * 2 + 0.5;
-            const alpha = Math.random() * 0.85 + 0.15;
-
-            ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
-            ctx.beginPath();
-            ctx.arc(x, y, size, 0, Math.PI * 2);
-            ctx.fill();
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            centerX = width / 2;
+            centerY = height / 2;
         }
 
-        /* SVG del Girasol de la captura (pétalos amarillos, hojas verdes y centro oscuro) */
-        function getSunflowerSVG() {
-            return `
-            <div class="sunflower-container">
-                <svg class="sunflower-svg" viewBox="0 0 100 100">
-                    <!-- Hojas verdes de fondo -->
-                    <g fill="#2e7d32">
-                        <path d="M 50 50 Q 10 20 5 45 Q 25 65 50 50 Z" />
-                        <path d="M 50 50 Q 90 20 95 45 Q 75 65 50 50 Z" />
-                        <path d="M 50 50 Q 10 80 20 95 Q 55 75 50 50 Z" />
-                        <path d="M 50 50 Q 90 80 80 95 Q 45 75 50 50 Z" />
-                    </g>
-                    <!-- Pétalos amarillos -->
-                    <g fill="#ffcc00">
-                        <ellipse cx="50" cy="10" rx="6" ry="18"/>
-                        <ellipse cx="50" cy="90" rx="6" ry="18"/>
-                        <ellipse cx="10" cy="50" rx="18" ry="6"/>
-                        <ellipse cx="90" cy="50" rx="18" ry="6"/>
-                        <ellipse cx="21" cy="21" rx="6" ry="18" transform="rotate(-45 21 21)"/>
-                        <ellipse cx="79" cy="79" rx="6" ry="18" transform="rotate(-45 79 79)"/>
-                        <ellipse cx="21" cy="79" rx="6" ry="18" transform="rotate(45 21 79)"/>
-                        <ellipse cx="79" cy="21" rx="6" ry="18" transform="rotate(45 79 21)"/>
-                    </g>
-                    <!-- Centro marrón del girasol -->
-                    <circle cx="50" cy="50" r="18" fill="#3a1e05"/>
-                    <circle cx="50" cy="50" r="14" fill="#200e02"/>
-                </svg>
-            </div>`;
+        window.addEventListener('resize', resize);
+        resize();
+
+        // --- Controles de Interacción 3D ---
+        let rotX = 0.5;
+        let rotY = 0;
+        let isDragging = false;
+        let previousMousePosition = { x: 0, y: 0 };
+
+        window.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const deltaX = e.clientX - previousMousePosition.x;
+            const deltaY = e.clientY - previousMousePosition.y;
+
+            rotY += deltaX * 0.004;
+            rotX += deltaY * 0.004;
+            rotX = Math.max(0.1, Math.min(Math.PI / 2 - 0.05, rotX));
+
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+        });
+
+        window.addEventListener('mouseup', () => isDragging = false);
+
+        window.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        });
+
+        window.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const deltaX = e.touches[0].clientX - previousMousePosition.x;
+            const deltaY = e.touches[0].clientY - previousMousePosition.y;
+
+            rotY += deltaX * 0.004;
+            rotX += deltaY * 0.004;
+            rotX = Math.max(0.1, Math.min(Math.PI / 2 - 0.05, rotX));
+
+            previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        });
+
+        window.addEventListener('touchend', () => isDragging = false);
+
+        // --- Generación de Partículas (Estrellas + Puntitos Amarillos) ---
+        const GALAXY_PARTICLES = 6500;
+        const galaxy = [];
+
+        for (let i = 0; i < GALAXY_PARTICLES; i++) {
+            const isNucleus = i < 700;
+            let dist, angle, color, size, speed;
+
+            if (isNucleus) {
+                dist = Math.pow(Math.random(), 1.5) * 65;
+                angle = Math.random() * Math.PI * 2;
+                color = `rgba(255, ${220 + Math.floor(Math.random() * 35)}, ${Math.floor(Math.random() * 80)}, ${0.85 + Math.random() * 0.15})`;
+                size = 1.2 + Math.random() * 2.8;
+                speed = 0.0025 + Math.random() * 0.001;
+            } else {
+                angle = Math.random() * Math.PI * 4;
+                dist = 50 + Math.pow(Math.random(), 1.3) * (Math.min(width, height) * 0.52);
+
+                const isGoldYellow = Math.random() < 0.75;
+                if (isGoldYellow) {
+                    const r = 255;
+                    const g = Math.floor(180 + Math.random() * 75);
+                    const b = Math.floor(Math.random() * 50);
+                    color = `rgba(${r}, ${g}, ${b}, ${0.4 + Math.random() * 0.55})`;
+                    size = 0.9 + Math.random() * 2.2;
+                } else {
+                    const r = Math.floor(180 + Math.random() * 75);
+                    const g = Math.floor(50 + Math.random() * 100);
+                    const b = 255;
+                    color = `rgba(${r}, ${g}, ${b}, ${0.3 + Math.random() * 0.5})`;
+                    size = 0.7 + Math.random() * 1.5;
+                }
+                speed = 0.0008 + (120 / (dist + 60)) * 0.0006;
+            }
+
+            galaxy.push({
+                dist: dist,
+                angle: angle,
+                speed: speed,
+                color: color,
+                size: size,
+                twinkle: Math.random() * Math.PI * 2
+            });
         }
 
+        // --- Lista de Palabras Exactas ---
         const words = [
             "Mi sol", "Mi amor", "Mi destino", "Mi cielo", "Esperanza", 
             "Libertad", "Felicidad", "Pasión", "Reina", "Mi razón", 
@@ -261,59 +254,180 @@
             "Mi calma", "Mi universo", "Dulzura", "Ternura", "Mi fiesta"
         ];
 
-        /* Crear distribución de elementos en pantalla */
-        const totalItems = 36;
-        const floatingItems = [];
+        // Posiciones orbitales para las etiquetas
+        const totalItems = words.length;
+        const floatingItems = words.map((word, index) => {
+            const angle = (index / totalItems) * Math.PI * 2 + Math.random() * 0.2;
+            const dist = 140 + Math.random() * (Math.min(width, height) * 0.32);
+            return {
+                word: word,
+                dist: dist,
+                angle: angle,
+                radius: 18 + Math.random() * 6,
+                isHighlight: index % 3 === 0
+            };
+        });
 
-        for (let i = 0; i < totalItems; i++) {
-            const item = document.createElement('div');
-            item.className = 'floating-item';
+        // --- Función para Dibujar Girasoles Realistas ---
+        function drawRealisticSunflower(x, y, radius) {
+            ctx.save();
+            ctx.translate(x, y);
 
-            const word = words[Math.floor(Math.random() * words.length)];
-            const isHighlight = Math.random() < 0.25;
+            // Capas de pétalos
+            const petalLayers = [
+                { count: 16, lenRatio: 1.2, widthRatio: 0.32, color: '#D97706' }, // Pétalos traseros oscuros
+                { count: 18, lenRatio: 1.0, widthRatio: 0.30, color: '#FBBF24' }, // Capa media brillante
+                { count: 14, lenRatio: 0.8, widthRatio: 0.28, color: '#FEF08A' }  // Capa interna clara
+            ];
 
-            item.innerHTML = `
-                ${getSunflowerSVG()}
-                <span class="tag-text ${isHighlight ? 'highlight' : ''}">${word}</span>
-            `;
+            petalLayers.forEach((layer, layerIdx) => {
+                const offset = (layerIdx * Math.PI) / layer.count;
+                for (let i = 0; i < layer.count; i++) {
+                    const angle = (i * Math.PI * 2) / layer.count + offset;
+                    ctx.save();
+                    ctx.rotate(angle);
 
-            universe.appendChild(item);
+                    ctx.beginPath();
+                    const pLen = radius * layer.lenRatio;
+                    const pWidth = radius * layer.widthRatio;
 
-            // Posicionamiento
-            const posX = Math.random() * 90 + 5; // Porcentaje de ancho
-            const posY = Math.random() * 65 + 25; // Porcentaje de alto
-            const speed = (Math.random() * 0.15 + 0.05) * (Math.random() < 0.5 ? 1 : -1);
-            const scale = 0.65 + Math.random() * 0.45;
+                    ctx.moveTo(0, -radius * 0.3);
+                    ctx.bezierCurveTo(-pWidth, -radius * 0.6, -pWidth * 0.8, -pLen, 0, -pLen * 1.1);
+                    ctx.bezierCurveTo(pWidth * 0.8, -pLen, pWidth, -radius * 0.6, 0, -radius * 0.3);
 
-            item.style.left = `${posX}vw`;
-            item.style.top = `${posY}vh`;
-
-            floatingItems.push({
-                element: item,
-                x: posX,
-                speed: speed,
-                scale: scale
+                    ctx.fillStyle = layer.color;
+                    ctx.shadowColor = '#D97706';
+                    ctx.shadowBlur = 4;
+                    ctx.fill();
+                    ctx.restore();
+                }
             });
+
+            // Centro oscuro en espiral de semillas
+            const centerRadius = radius * 0.42;
+            ctx.beginPath();
+            ctx.arc(0, 0, centerRadius, 0, Math.PI * 2);
+            ctx.fillStyle = '#2A1508';
+            ctx.shadowColor = '#000000';
+            ctx.shadowBlur = 6;
+            ctx.fill();
+
+            const seedCount = 40;
+            const goldenAngle = 137.5 * (Math.PI / 180);
+            for (let i = 0; i < seedCount; i++) {
+                const r = Math.sqrt(i / seedCount) * (centerRadius * 0.85);
+                const theta = i * goldenAngle;
+                const sX = r * Math.cos(theta);
+                const sY = r * Math.sin(theta);
+
+                ctx.beginPath();
+                ctx.arc(sX, sY, radius * 0.038, 0, Math.PI * 2);
+                ctx.fillStyle = i % 2 === 0 ? '#5C3317' : '#8B4513';
+                ctx.fill();
+            }
+
+            ctx.restore();
         }
 
-        /* Movimiento 2D horizontal constante (sin rotaciones 3D) */
+        // --- Bucle de Animación ---
+        let pulseTime = 0;
+
         function animate() {
-            floatingItems.forEach(item => {
-                item.x += item.speed * 0.1;
+            ctx.fillStyle = '#020208';
+            ctx.fillRect(0, 0, width, height);
 
-                if (item.x > 95) item.x = 2;
-                if (item.x < 2) item.x = 95;
+            pulseTime += 0.03;
 
-                item.element.style.left = `${item.x}vw`;
-                item.element.style.transform = `scale(${item.scale})`;
+            // 1. Dibujar Partículas de la Galaxia
+            galaxy.forEach(p => {
+                p.angle += p.speed;
+                p.twinkle += 0.05;
+
+                const rawX = Math.cos(p.angle + rotY) * p.dist;
+                const rawY = Math.sin(p.angle + rotY) * p.dist;
+
+                const screenX = centerX + rawX;
+                const screenY = centerY + rawY * Math.sin(rotX);
+
+                const twinkleAlpha = 0.7 + Math.sin(p.twinkle) * 0.3;
+
+                ctx.beginPath();
+                ctx.arc(screenX, screenY, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.globalAlpha = twinkleAlpha;
+                ctx.fill();
+                ctx.globalAlpha = 1.0;
+            });
+
+            // 2. Núcleo Resplandeciente
+            const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 85);
+            gradient.addColorStop(0, 'rgba(255, 255, 240, 1)');
+            gradient.addColorStop(0.2, 'rgba(255, 215, 0, 0.9)');
+            gradient.addColorStop(0.55, 'rgba(255, 140, 0, 0.4)');
+            gradient.addColorStop(1, 'transparent');
+
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 85, 0, Math.PI * 2);
+            ctx.fillStyle = gradient;
+            ctx.fill();
+
+            // 3. Dibujar Girasoles con sus Etiquetas
+            floatingItems.forEach(f => {
+                const floatY = Math.sin(pulseTime + f.dist) * 6;
+
+                const currentAngle = f.angle + rotY;
+                const rawX = Math.cos(currentAngle) * f.dist;
+                const rawY = Math.sin(currentAngle) * f.dist;
+
+                const screenX = centerX + rawX;
+                const screenY = centerY + rawY * Math.sin(rotX) + floatY;
+
+                // Dibujar girasol
+                drawRealisticSunflower(screenX - 35, screenY, f.radius);
+
+                // Dibujar etiqueta de texto
+                ctx.save();
+                ctx.font = f.isHighlight ? "bold 15px 'Segoe UI', sans-serif" : "bold 13px 'Segoe UI', sans-serif";
+
+                const textWidth = ctx.measureText(f.word).width;
+                const paddingX = 14;
+                const paddingY = 6;
+                const rectX = screenX;
+                const rectY = screenY - 12;
+                const rectWidth = textWidth + paddingX * 2;
+                const rectHeight = 24;
+
+                // Fondo de la etiqueta
+                ctx.beginPath();
+                ctx.roundRect(rectX, rectY, rectWidth, rectHeight, 12);
+                ctx.fillStyle = 'rgba(10, 8, 5, 0.88)';
+                ctx.fill();
+
+                // Borde dorado
+                ctx.strokeStyle = f.isHighlight ? '#ffee77' : '#ffcc00';
+                ctx.lineWidth = f.isHighlight ? 2 : 1.5;
+                ctx.shadowColor = '#ffcc00';
+                ctx.shadowBlur = f.isHighlight ? 12 : 6;
+                ctx.stroke();
+
+                // Texto
+                ctx.fillStyle = '#ffffff';
+                ctx.shadowBlur = 4;
+                ctx.fillText(f.word, rectX + paddingX, rectY + 16);
+
+                ctx.restore();
             });
 
             requestAnimationFrame(animate);
         }
+
         animate();
 
+        // --- Cerrar Modal ---
         function closeModal() {
-            document.getElementById('cardModal').classList.add('hidden');
+            const modal = document.getElementById('cardModal');
+            modal.style.opacity = '0';
+            setTimeout(() => modal.classList.add('hidden'), 500);
         }
     </script>
 </body>
