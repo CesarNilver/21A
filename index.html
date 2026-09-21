@@ -16,10 +16,11 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background-color: #020105;
+            background-color: #010103;
             color: #ffffff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             touch-action: none;
+            perspective: 1000px; /* Habilita el espacio 3D */
         }
 
         #viewport {
@@ -28,21 +29,22 @@
             position: relative;
             cursor: grab;
             overflow: hidden;
-            touch-action: none;
+            perspective: 1000px;
         }
 
         #viewport:active {
             cursor: grabbing;
         }
 
+        /* Contenedor 3D que rotará sobre los ejes X e Y */
         #space-container {
             position: absolute;
-            width: 300vw;
-            height: 300vh;
-            top: -100vh;
-            left: -100vw;
+            width: 180vw;
+            height: 180vh;
+            top: -40vh;
+            left: -40vw;
             will-change: transform;
-            touch-action: none;
+            transform-style: preserve-3d;
             transform-origin: center center;
         }
 
@@ -56,7 +58,52 @@
             pointer-events: none;
         }
 
-        /* Elementos flotantes en órbita 3D */
+        /* Agujero negro central dorado */
+        .black-hole-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 180px;
+            height: 180px;
+            margin-top: -90px;
+            margin-left: -90px;
+            z-index: 10;
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: translateZ(0px);
+        }
+
+        .accretion-disk {
+            position: absolute;
+            width: 220%;
+            height: 220%;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 235, 120, 0.95) 0%, rgba(255, 140, 0, 0.8) 35%, rgba(220, 50, 0, 0.45) 60%, rgba(0,0,0,0) 78%);
+            filter: blur(10px);
+            animation: rotateDisk 10s linear infinite;
+        }
+
+        .black-hole-core {
+            position: relative;
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: #000000;
+            box-shadow: 0 0 25px 10px #ffffff,
+                        0 0 50px 20px #ffcc00,
+                        0 0 90px 40px #ff3300,
+                        0 0 140px 60px rgba(255, 180, 0, 0.35);
+        }
+
+        @keyframes rotateDisk {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.04); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        /* Elementos flotantes alrededor de la galaxia */
         .floating-item {
             position: absolute;
             display: flex;
@@ -67,40 +114,39 @@
             white-space: nowrap;
             z-index: 15;
             will-change: transform;
+            transform-style: preserve-3d;
         }
 
         .sunflower-svg {
-            width: 58px;
-            height: 58px;
+            width: 60px;
+            height: 60px;
             flex-shrink: 0;
             filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.9));
         }
 
         .tag-text {
-            background: rgba(15, 5, 20, 0.75);
-            padding: 6px 16px;
+            background: rgba(15, 10, 5, 0.82);
+            padding: 7px 16px;
             border-radius: 22px;
-            font-size: 15px;
-            font-weight: 700;
-            color: #ffffff;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-shadow: 0 0 10px #ff007f, 0 0 20px #ff00a0;
-            border: 1px solid rgba(255, 0, 150, 0.6);
+            font-size: 14px;
+            font-weight: 600;
+            color: #fffdf0;
+            text-shadow: 0 0 8px #ffcc00;
+            border: 1px solid rgba(255, 215, 0, 0.55);
             backdrop-filter: blur(8px);
-            box-shadow: 0 4px 18px rgba(255, 0, 128, 0.3);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.65);
         }
 
         .tag-text.highlight {
-            font-size: 22px;
-            font-weight: 900;
+            font-size: 19px;
+            font-weight: 800;
             color: #ffffff;
-            border: 1.5px solid rgba(255, 255, 255, 0.9);
-            text-shadow: 0 0 15px #ffffff, 0 0 30px #ff007f;
-            background: rgba(40, 5, 30, 0.85);
+            border: 1px solid rgba(255, 240, 160, 0.95);
+            text-shadow: 0 0 14px #ffee00, 0 0 26px #ff6600;
+            background: rgba(35, 20, 5, 0.92);
         }
 
-        /* Modal romántico */
+        /* Modal con carta emergente */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -116,9 +162,9 @@
         }
 
         .modal-card {
-            background: linear-gradient(145deg, rgba(35, 8, 25, 0.95), rgba(12, 3, 15, 0.98));
-            border: 2px solid #ff007f;
-            box-shadow: 0 0 35px rgba(255, 0, 127, 0.6), 0 0 15px rgba(255, 215, 0, 0.4);
+            background: linear-gradient(145deg, rgba(30, 20, 10, 0.95), rgba(12, 5, 18, 0.98));
+            border: 2px solid #ffaa00;
+            box-shadow: 0 0 35px rgba(255, 170, 0, 0.5), 0 0 15px rgba(255, 200, 0, 0.4);
             border-radius: 24px;
             padding: 35px;
             max-width: 440px;
@@ -129,21 +175,21 @@
         .modal-title {
             font-family: 'Brush Script MT', cursive, sans-serif;
             font-size: 44px;
-            color: #ffcc00;
+            color: #ffc233;
             margin-bottom: 18px;
-            text-shadow: 0 0 15px rgba(255, 204, 0, 0.8);
+            text-shadow: 0 0 15px rgba(255, 194, 51, 0.7);
         }
 
         .modal-text {
             font-size: 15px;
             line-height: 1.6;
-            color: #fce4ec;
+            color: #f3e5d8;
             margin-bottom: 15px;
             font-style: italic;
         }
 
         .modal-btn {
-            background: linear-gradient(135deg, #ff007f, #99004c);
+            background: linear-gradient(135deg, #ff9900, #b35900);
             color: white;
             border: none;
             padding: 12px 34px;
@@ -152,13 +198,13 @@
             border-radius: 22px;
             cursor: pointer;
             margin-top: 10px;
-            box-shadow: 0 0 15px rgba(255, 0, 127, 0.6);
+            box-shadow: 0 0 15px rgba(255, 153, 0, 0.6);
             transition: transform 0.2s, background 0.2s;
         }
 
         .modal-btn:hover {
             transform: scale(1.05);
-            background: linear-gradient(135deg, #ff3399, #cc0066);
+            background: linear-gradient(135deg, #ffaa22, #cc6600);
         }
 
         .hidden {
@@ -171,6 +217,10 @@
     <div id="viewport">
         <div id="space-container">
             <canvas id="galaxyCanvas"></canvas>
+            <div class="black-hole-container">
+                <div class="accretion-disk"></div>
+                <div class="black-hole-core"></div>
+            </div>
         </div>
     </div>
 
@@ -197,101 +247,59 @@
         }
         resizeCanvas();
 
-        /* GENERACIÓN DE GALAXIA FUCSIA EN PERSPECTIVA 3D CON HAZ EN V */
+        /* GALAXIA DORADA ANTERIOR EN CANVAS */
         const stars = [];
-        const numStars = 3000;
-        const arms = 2;
+        const numStars = 2200;
+        const arms = 4;
 
-        // Disco de la galaxia inclinado
         for (let i = 0; i < numStars; i++) {
-            const distance = Math.pow(Math.random(), 1.8) * (canvas.width * 0.38);
+            const distance = Math.pow(Math.random(), 2) * (canvas.width * 0.45);
             const armAngle = (Math.floor(Math.random() * arms) * ((Math.PI * 2) / arms));
-            const spiralAngle = distance * 0.0022;
-            const totalAngle = armAngle + spiralAngle + (Math.random() - 0.5) * 0.5;
+            const spiralAngle = distance * 0.0018;
+            const totalAngle = armAngle + spiralAngle + (Math.random() - 0.5) * 0.6;
 
-            // Paleta fucsia / magenta brillante
-            const colors = ['#ff00a0', '#ff33b5', '#e000ff', '#ff80df', '#ffffff'];
+            const x = canvas.width / 2 + Math.cos(totalAngle) * distance;
+            const y = canvas.height / 2 + Math.sin(totalAngle) * distance;
+
+            const colors = ['#fff1a8', '#ffb74d', '#e1bee7', '#70d6ff', '#ffffff'];
             const color = colors[Math.floor(Math.random() * colors.length)];
 
             stars.push({
+                x, y,
                 distance,
                 angle: totalAngle,
-                speed: (0.0003 + (1 / (distance + 60)) * 0.18),
-                size: Math.random() * 2.6 + 0.8,
+                speed: (0.0002 + (1 / (distance + 80)) * 0.25),
+                size: Math.random() * 2.2 + 0.5,
                 color,
-                alpha: Math.random() * 0.85 + 0.15,
-                type: 'galaxy'
-            });
-        }
-
-        // Partículas proyectadas hacia arriba en forma de "V"
-        const vParticles = [];
-        for (let i = 0; i < 400; i++) {
-            const side = Math.random() < 0.5 ? -1 : 1;
-            const progress = Math.random();
-            const angleDeg = (side === -1 ? 125 : 55) + (Math.random() - 0.5) * 12;
-            const rad = (angleDeg * Math.PI) / 180;
-            const speed = Math.random() * 1.5 + 0.5;
-
-            vParticles.push({
-                x: 0,
-                y: 0,
-                vx: Math.cos(rad) * speed * 250,
-                vy: -Math.sin(rad) * speed * 250,
-                progress: Math.random(),
-                size: Math.random() * 3 + 1,
-                color: Math.random() < 0.8 ? '#ff00a0' : '#ff99e6'
+                alpha: Math.random() * 0.85 + 0.15
             });
         }
 
         function drawGalaxy() {
-            ctx.fillStyle = 'rgba(2, 1, 5, 0.25)';
+            ctx.fillStyle = 'rgba(1, 1, 3, 0.22)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2 + 80; // Centro desplazado levemente abajo para equilibrar la V
+            const centerY = canvas.height / 2;
 
             ctx.globalCompositeOperation = 'screen';
-
-            // Resplandor central dorado/blanco brillante
-            const coreGlow = ctx.createRadialGradient(centerX, centerY, 5, centerX, centerY, 180);
-            coreGlow.addColorStop(0, 'rgba(255, 255, 200, 1)');
-            coreGlow.addColorStop(0.15, 'rgba(255, 200, 0, 0.9)');
-            coreGlow.addColorStop(0.4, 'rgba(255, 0, 128, 0.5)');
-            coreGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
-            ctx.fillStyle = coreGlow;
+            const nebula = ctx.createRadialGradient(centerX, centerY, 80, centerX, centerY, canvas.width * 0.46);
+            nebula.addColorStop(0, 'rgba(255, 170, 30, 0.28)');
+            nebula.addColorStop(0.3, 'rgba(170, 40, 240, 0.18)');
+            nebula.addColorStop(0.65, 'rgba(20, 70, 190, 0.1)');
+            nebula.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            ctx.fillStyle = nebula;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Renderizar partículas del disco galáctico inclinado en 3D (Eje Y comprimido)
-            const tiltY = 0.28; // Compresión vertical para efecto de disco en perspectiva
 
             stars.forEach(star => {
                 star.angle += star.speed;
-                const rawX = Math.cos(star.angle) * star.distance;
-                const rawY = Math.sin(star.angle) * star.distance;
-
-                const currentX = centerX + rawX;
-                const currentY = centerY + rawY * tiltY;
+                const currentX = centerX + Math.cos(star.angle) * star.distance;
+                const currentY = centerY + Math.sin(star.angle) * star.distance;
 
                 ctx.fillStyle = star.color;
                 ctx.globalAlpha = star.alpha;
                 ctx.beginPath();
                 ctx.arc(currentX, currentY, star.size, 0, Math.PI * 2);
-                ctx.fill();
-            });
-
-            // Renderizar el haz de luz en forma de "V" superior
-            vParticles.forEach(p => {
-                p.progress += 0.005;
-                if (p.progress > 1) p.progress = 0;
-
-                const currentX = centerX + p.vx * p.progress;
-                const currentY = centerY + p.vy * p.progress;
-
-                ctx.fillStyle = p.color;
-                ctx.globalAlpha = (1 - p.progress) * 0.9;
-                ctx.beginPath();
-                ctx.arc(currentX, currentY, p.size, 0, Math.PI * 2);
                 ctx.fill();
             });
 
@@ -302,7 +310,7 @@
         }
         drawGalaxy();
 
-        /* GIRASOL REALISTA DETALLADO */
+        /* GIRASOL REALISTA VECTORIAL */
         function getSunflowerSVG() {
             return `
             <svg class="sunflower-svg" viewBox="0 0 100 100">
@@ -358,14 +366,16 @@
         }
 
         const words = [
-            "INFINITO ∞", "SIEMPRE", "MI CORAZÓN ES TUYO", "CONTIGO SIEMPRE", 
-            "AMOR ETERNO", "MI SOL", "MI UNIVERSO", "TE AMO", "ERES MI CIELO"
+            "Mi sol", "Mi amor", "Mi destino", "Mi cielo", "Esperanza", 
+            "Libertad", "Felicidad", "Pasión", "Reina", "Mi razón", 
+            "Eternidad", "Brillas", "Sueños", "Mi flor", "Contigo", 
+            "Mi calma", "Mi universo", "Dulzura", "Ternura", "Mi fiesta"
         ];
 
-        /* ELEMENTOS ORBITANDO EN EL DISCO INCLINADO 3D */
-        const totalItems = 32;
+        /* ELEMENTOS ALREDEDOR DE LA GALAXIA */
+        const totalItems = 42;
         const orbitingItems = [];
-        const minRadius = 220;
+        const minRadius = 200;
         const maxRadius = spaceContainer.clientWidth * 0.42;
 
         for (let i = 0; i < totalItems; i++) {
@@ -373,7 +383,7 @@
             item.className = 'floating-item';
 
             const word = words[Math.floor(Math.random() * words.length)];
-            const isHighlight = word.includes("INFINITO") || word.includes("SIEMPRE");
+            const isHighlight = Math.random() < 0.25;
 
             item.innerHTML = `
                 ${getSunflowerSVG()}
@@ -384,7 +394,8 @@
 
             const radius = minRadius + Math.random() * (maxRadius - minRadius);
             const initialAngle = Math.random() * Math.PI * 2;
-            const speed = (0.0003 + (1 / radius) * 0.12);
+            const direction = Math.random() < 0.85 ? 1 : -1;
+            const speed = (0.0003 + (1 / radius) * 0.12) * direction;
             const scale = 0.75 + Math.random() * 0.45;
 
             orbitingItems.push({
@@ -398,47 +409,47 @@
 
         function animateOrbit() {
             const centerX = spaceContainer.clientWidth / 2;
-            const centerY = spaceContainer.clientHeight / 2 + 80;
-            const tiltY = 0.28; // Mismo factor de inclinación que la galaxia
+            const centerY = spaceContainer.clientHeight / 2;
 
             orbitingItems.forEach(item => {
                 item.angle += item.speed;
 
-                const rawX = Math.cos(item.angle) * item.radius;
-                const rawY = Math.sin(item.angle) * item.radius;
+                const x = centerX + Math.cos(item.angle) * item.radius;
+                const y = centerY + Math.sin(item.angle) * item.radius;
 
-                const x = centerX + rawX;
-                const y = centerY + rawY * tiltY;
-
-                // Escala según la posición en profundidad (z-index simulated)
-                const depthScale = item.scale * (0.8 + (rawY / item.radius) * 0.2);
-
-                item.element.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(${depthScale})`;
+                item.element.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(${item.scale})`;
             });
 
             requestAnimationFrame(animateOrbit);
         }
         animateOrbit();
 
-        /* ARRASTRE Y PINCH-TO-ZOOM EN MÓVIL Y PC */
+        /* FÍSICA DE MOVIMIENTO ROTACIONAL Y NAVEGACIÓN EN 3D */
         let isDragging = false;
         let startX = 0, startY = 0;
-        let currentX = -spaceContainer.clientWidth / 3;
-        let currentY = -spaceContainer.clientHeight / 3;
-        let targetX = currentX, targetY = currentY;
+
+        let rotX = 25; // Inclinación 3D inicial
+        let rotY = 0;
+        let targetRotX = 25;
+        let targetRotY = 0;
 
         let scale = 1;
         let targetScale = 1;
         let initialPinchDist = null;
 
         function updatePhysics() {
-            currentX += (targetX - currentX) * 0.08;
-            currentY += (targetY - currentY) * 0.08;
+            // Suavizado de inclinación en los ejes X e Y (efecto 3D)
+            rotX += (targetRotX - rotX) * 0.08;
+            rotY += (targetRotY - rotY) * 0.08;
             scale += (targetScale - scale) * 0.08;
 
-            spaceContainer.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) scale(${scale})`;
+            spaceContainer.style.transform = `translate(-50%, -50%) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(${scale})`;
             requestAnimationFrame(updatePhysics);
         }
+        
+        // Ajuste de posición central inicial
+        spaceContainer.style.left = '50%';
+        spaceContainer.style.top = '50%';
         updatePhysics();
 
         function getPinchDistance(e) {
@@ -448,11 +459,12 @@
             );
         }
 
+        /* CONTROLES TÁCTILES Y DE RATÓN EN 3D */
         viewport.addEventListener('touchstart', (e) => {
             if (e.touches.length === 1) {
                 isDragging = true;
-                startX = e.touches[0].clientX - targetX;
-                startY = e.touches[0].clientY - targetY;
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
             } else if (e.touches.length === 2) {
                 isDragging = false;
                 initialPinchDist = getPinchDistance(e);
@@ -461,8 +473,14 @@
 
         window.addEventListener('touchmove', (e) => {
             if (e.touches.length === 1 && isDragging) {
-                targetX = e.touches[0].clientX - startX;
-                targetY = e.touches[0].clientY - startY;
+                const deltaX = e.touches[0].clientX - startX;
+                const deltaY = e.touches[0].clientY - startY;
+
+                targetRotY += deltaX * 0.35;
+                targetRotX -= deltaY * 0.35;
+
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
             } else if (e.touches.length === 2 && initialPinchDist) {
                 const newDist = getPinchDistance(e);
                 const factor = newDist / initialPinchDist;
@@ -484,14 +502,20 @@
 
         viewport.addEventListener('mousedown', (e) => {
             isDragging = true;
-            startX = e.clientX - targetX;
-            startY = e.clientY - targetY;
+            startX = e.clientX;
+            startY = e.clientY;
         });
 
         window.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
-            targetX = e.clientX - startX;
-            targetY = e.clientY - startY;
+            const deltaX = e.clientX - startX;
+            const deltaY = e.clientY - startY;
+
+            targetRotY += deltaX * 0.35;
+            targetRotX -= deltaY * 0.35;
+
+            startX = e.clientX;
+            startY = e.clientY;
         });
 
         window.addEventListener('mouseup', () => isDragging = false);
