@@ -20,7 +20,6 @@
             color: #ffffff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             touch-action: none;
-            perspective: 1000px; /* Habilita el espacio 3D */
         }
 
         #viewport {
@@ -29,23 +28,23 @@
             position: relative;
             cursor: grab;
             overflow: hidden;
-            perspective: 1000px;
+            perspective: 1000px; /* Habilita la perspectiva 3D */
         }
 
         #viewport:active {
             cursor: grabbing;
         }
 
-        /* Contenedor 3D que rotará sobre los ejes X e Y */
+        /* Contenedor 3D principal */
         #space-container {
             position: absolute;
             width: 180vw;
             height: 180vh;
-            top: -40vh;
-            left: -40vw;
+            top: 50%;
+            left: 50%;
             will-change: transform;
             transform-style: preserve-3d;
-            transform-origin: center center;
+            backface-visibility: visible;
         }
 
         #galaxyCanvas {
@@ -56,9 +55,10 @@
             height: 100%;
             z-index: 1;
             pointer-events: none;
+            backface-visibility: visible;
         }
 
-        /* Agujero negro central dorado */
+        /* Agujero negro central */
         .black-hole-container {
             position: absolute;
             top: 50%;
@@ -72,7 +72,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            transform: translateZ(0px);
+            transform-style: preserve-3d;
+            backface-visibility: visible;
         }
 
         .accretion-disk {
@@ -83,6 +84,7 @@
             background: radial-gradient(circle, rgba(255, 235, 120, 0.95) 0%, rgba(255, 140, 0, 0.8) 35%, rgba(220, 50, 0, 0.45) 60%, rgba(0,0,0,0) 78%);
             filter: blur(10px);
             animation: rotateDisk 10s linear infinite;
+            backface-visibility: visible;
         }
 
         .black-hole-core {
@@ -95,6 +97,7 @@
                         0 0 50px 20px #ffcc00,
                         0 0 90px 40px #ff3300,
                         0 0 140px 60px rgba(255, 180, 0, 0.35);
+            backface-visibility: visible;
         }
 
         @keyframes rotateDisk {
@@ -103,7 +106,7 @@
             100% { transform: rotate(360deg) scale(1); }
         }
 
-        /* Elementos flotantes alrededor de la galaxia */
+        /* Elementos en órbita */
         .floating-item {
             position: absolute;
             display: flex;
@@ -115,6 +118,7 @@
             z-index: 15;
             will-change: transform;
             transform-style: preserve-3d;
+            backface-visibility: visible;
         }
 
         .sunflower-svg {
@@ -125,7 +129,7 @@
         }
 
         .tag-text {
-            background: rgba(15, 10, 5, 0.82);
+            background: rgba(15, 10, 5, 0.85);
             padding: 7px 16px;
             border-radius: 22px;
             font-size: 14px;
@@ -146,7 +150,7 @@
             background: rgba(35, 20, 5, 0.92);
         }
 
-        /* Modal con carta emergente */
+        /* Modal romántico */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -224,7 +228,7 @@
         </div>
     </div>
 
-    <!-- Modal con mensaje final -->
+    <!-- Modal con dedicatoria -->
     <div class="modal-overlay" id="cardModal">
         <div class="modal-card">
             <h1 class="modal-title">Mi Amor...</h1>
@@ -247,7 +251,7 @@
         }
         resizeCanvas();
 
-        /* GALAXIA DORADA ANTERIOR EN CANVAS */
+        /* FONDO GALÁCTICO DE ESTRELLAS Y NEBULOSA */
         const stars = [];
         const numStars = 2200;
         const arms = 4;
@@ -372,7 +376,7 @@
             "Mi calma", "Mi universo", "Dulzura", "Ternura", "Mi fiesta"
         ];
 
-        /* ELEMENTOS ALREDEDOR DE LA GALAXIA */
+        /* CREACIÓN DE ELEMENTOS FLOTANTES */
         const totalItems = 42;
         const orbitingItems = [];
         const minRadius = 200;
@@ -407,28 +411,11 @@
             });
         }
 
-        function animateOrbit() {
-            const centerX = spaceContainer.clientWidth / 2;
-            const centerY = spaceContainer.clientHeight / 2;
-
-            orbitingItems.forEach(item => {
-                item.angle += item.speed;
-
-                const x = centerX + Math.cos(item.angle) * item.radius;
-                const y = centerY + Math.sin(item.angle) * item.radius;
-
-                item.element.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(${item.scale})`;
-            });
-
-            requestAnimationFrame(animateOrbit);
-        }
-        animateOrbit();
-
-        /* FÍSICA DE MOVIMIENTO ROTACIONAL Y NAVEGACIÓN EN 3D */
+        /* NAVEGACIÓN Y ROTACIÓN 3D INTERACTIVA */
         let isDragging = false;
         let startX = 0, startY = 0;
 
-        let rotX = 25; // Inclinación 3D inicial
+        let rotX = 25;
         let rotY = 0;
         let targetRotX = 25;
         let targetRotY = 0;
@@ -438,16 +425,30 @@
         let initialPinchDist = null;
 
         function updatePhysics() {
-            // Suavizado de inclinación en los ejes X e Y (efecto 3D)
             rotX += (targetRotX - rotX) * 0.08;
             rotY += (targetRotY - rotY) * 0.08;
             scale += (targetScale - scale) * 0.08;
 
+            // Rotar la galaxia entera
             spaceContainer.style.transform = `translate(-50%, -50%) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(${scale})`;
+
+            // BILLBOARDING: Mantener los textos y flores mirando verticalmente hacia el frente
+            const centerX = spaceContainer.clientWidth / 2;
+            const centerY = spaceContainer.clientHeight / 2;
+
+            orbitingItems.forEach(item => {
+                item.angle += item.speed;
+
+                const x = centerX + Math.cos(item.angle) * item.radius;
+                const y = centerY + Math.sin(item.angle) * item.radius;
+
+                // Cancela las rotaciones del contenedor padre para mantener los textos verticales
+                item.element.style.transform = `translate3d(${x}px, ${y}px, 0px) translate(-50%, -50%) rotateY(${-rotY}deg) rotateX(${-rotX}deg) scale(${item.scale})`;
+            });
+
             requestAnimationFrame(updatePhysics);
         }
-        
-        // Ajuste de posición central inicial
+
         spaceContainer.style.left = '50%';
         spaceContainer.style.top = '50%';
         updatePhysics();
@@ -459,7 +460,7 @@
             );
         }
 
-        /* CONTROLES TÁCTILES Y DE RATÓN EN 3D */
+        /* CONTROLES TÁCTILES MÓVIL Y RATÓN PC */
         viewport.addEventListener('touchstart', (e) => {
             if (e.touches.length === 1) {
                 isDragging = true;
