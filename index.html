@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Flores Amarillas en la Galaxia Infinita</title>
+    <title>Galaxia 3D de Flores Amarillas</title>
     <style>
         * {
             margin: 0;
@@ -16,7 +16,7 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background-color: #010103;
+            background-color: #020105;
             color: #ffffff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             touch-action: none;
@@ -56,51 +56,7 @@
             pointer-events: none;
         }
 
-        /* Agujero negro central */
-        .black-hole-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 180px;
-            height: 180px;
-            margin-top: -90px;
-            margin-left: -90px;
-            z-index: 10;
-            pointer-events: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .accretion-disk {
-            position: absolute;
-            width: 220%;
-            height: 220%;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255, 235, 120, 0.95) 0%, rgba(255, 140, 0, 0.8) 35%, rgba(220, 20, 60, 0.45) 60%, rgba(0,0,0,0) 78%);
-            filter: blur(10px);
-            animation: rotateDisk 10s linear infinite;
-        }
-
-        .black-hole-core {
-            position: relative;
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
-            background: #000000;
-            box-shadow: 0 0 25px 10px #ffffff,
-                        0 0 50px 20px #ffcc00,
-                        0 0 90px 40px #ff3300,
-                        0 0 140px 60px rgba(180, 0, 255, 0.35);
-        }
-
-        @keyframes rotateDisk {
-            0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(180deg) scale(1.04); }
-            100% { transform: rotate(360deg) scale(1); }
-        }
-
-        /* Elementos en órbita */
+        /* Elementos flotantes en órbita 3D */
         .floating-item {
             position: absolute;
             display: flex;
@@ -114,35 +70,37 @@
         }
 
         .sunflower-svg {
-            width: 64px;
-            height: 64px;
+            width: 58px;
+            height: 58px;
             flex-shrink: 0;
-            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.85));
+            filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.9));
         }
 
         .tag-text {
-            background: rgba(12, 6, 18, 0.85);
-            padding: 7px 16px;
+            background: rgba(15, 5, 20, 0.75);
+            padding: 6px 16px;
             border-radius: 22px;
-            font-size: 14px;
-            font-weight: 600;
-            color: #fffdf0;
-            text-shadow: 0 0 8px #ffcc00;
-            border: 1px solid rgba(255, 215, 0, 0.55);
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px #ff007f, 0 0 20px #ff00a0;
+            border: 1px solid rgba(255, 0, 150, 0.6);
             backdrop-filter: blur(8px);
-            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.65);
+            box-shadow: 0 4px 18px rgba(255, 0, 128, 0.3);
         }
 
         .tag-text.highlight {
-            font-size: 19px;
-            font-weight: 800;
+            font-size: 22px;
+            font-weight: 900;
             color: #ffffff;
-            border: 1px solid rgba(255, 240, 160, 0.95);
-            text-shadow: 0 0 14px #ffee00, 0 0 26px #ff6600;
-            background: rgba(35, 15, 28, 0.92);
+            border: 1.5px solid rgba(255, 255, 255, 0.9);
+            text-shadow: 0 0 15px #ffffff, 0 0 30px #ff007f;
+            background: rgba(40, 5, 30, 0.85);
         }
 
-        /* Modal emergente */
+        /* Modal romántico */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -158,9 +116,9 @@
         }
 
         .modal-card {
-            background: linear-gradient(145deg, rgba(30, 12, 25, 0.95), rgba(12, 5, 18, 0.98));
-            border: 2px solid #ff4433;
-            box-shadow: 0 0 35px rgba(255, 68, 51, 0.6), 0 0 15px rgba(255, 200, 0, 0.4);
+            background: linear-gradient(145deg, rgba(35, 8, 25, 0.95), rgba(12, 3, 15, 0.98));
+            border: 2px solid #ff007f;
+            box-shadow: 0 0 35px rgba(255, 0, 127, 0.6), 0 0 15px rgba(255, 215, 0, 0.4);
             border-radius: 24px;
             padding: 35px;
             max-width: 440px;
@@ -171,21 +129,21 @@
         .modal-title {
             font-family: 'Brush Script MT', cursive, sans-serif;
             font-size: 44px;
-            color: #ffc233;
+            color: #ffcc00;
             margin-bottom: 18px;
-            text-shadow: 0 0 15px rgba(255, 194, 51, 0.7);
+            text-shadow: 0 0 15px rgba(255, 204, 0, 0.8);
         }
 
         .modal-text {
             font-size: 15px;
             line-height: 1.6;
-            color: #f3e5d8;
+            color: #fce4ec;
             margin-bottom: 15px;
             font-style: italic;
         }
 
         .modal-btn {
-            background: linear-gradient(135deg, #ff3333, #b30000);
+            background: linear-gradient(135deg, #ff007f, #99004c);
             color: white;
             border: none;
             padding: 12px 34px;
@@ -194,13 +152,13 @@
             border-radius: 22px;
             cursor: pointer;
             margin-top: 10px;
-            box-shadow: 0 0 15px rgba(255, 51, 51, 0.6);
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.6);
             transition: transform 0.2s, background 0.2s;
         }
 
         .modal-btn:hover {
             transform: scale(1.05);
-            background: linear-gradient(135deg, #ff5555, #cc0000);
+            background: linear-gradient(135deg, #ff3399, #cc0066);
         }
 
         .hidden {
@@ -213,13 +171,10 @@
     <div id="viewport">
         <div id="space-container">
             <canvas id="galaxyCanvas"></canvas>
-            <div class="black-hole-container">
-                <div class="accretion-disk"></div>
-                <div class="black-hole-core"></div>
-            </div>
         </div>
     </div>
 
+    <!-- Modal con mensaje final -->
     <div class="modal-overlay" id="cardModal">
         <div class="modal-card">
             <h1 class="modal-title">Mi Amor...</h1>
@@ -242,59 +197,101 @@
         }
         resizeCanvas();
 
-        /* FONDO GALÁCTICO */
+        /* GENERACIÓN DE GALAXIA FUCSIA EN PERSPECTIVA 3D CON HAZ EN V */
         const stars = [];
-        const numStars = 2200;
-        const arms = 4;
+        const numStars = 3000;
+        const arms = 2;
 
+        // Disco de la galaxia inclinado
         for (let i = 0; i < numStars; i++) {
-            const distance = Math.pow(Math.random(), 2) * (canvas.width * 0.48);
+            const distance = Math.pow(Math.random(), 1.8) * (canvas.width * 0.38);
             const armAngle = (Math.floor(Math.random() * arms) * ((Math.PI * 2) / arms));
-            const spiralAngle = distance * 0.0018;
-            const totalAngle = armAngle + spiralAngle + (Math.random() - 0.5) * 0.6;
+            const spiralAngle = distance * 0.0022;
+            const totalAngle = armAngle + spiralAngle + (Math.random() - 0.5) * 0.5;
 
-            const x = canvas.width / 2 + Math.cos(totalAngle) * distance;
-            const y = canvas.height / 2 + Math.sin(totalAngle) * distance;
-
-            const colors = ['#fff1a8', '#ffb74d', '#e1bee7', '#80deea', '#ffffff'];
+            // Paleta fucsia / magenta brillante
+            const colors = ['#ff00a0', '#ff33b5', '#e000ff', '#ff80df', '#ffffff'];
             const color = colors[Math.floor(Math.random() * colors.length)];
 
             stars.push({
-                x, y,
                 distance,
                 angle: totalAngle,
-                speed: (0.0002 + (1 / (distance + 80)) * 0.25),
-                size: Math.random() * 2.2 + 0.5,
+                speed: (0.0003 + (1 / (distance + 60)) * 0.18),
+                size: Math.random() * 2.6 + 0.8,
                 color,
-                alpha: Math.random() * 0.85 + 0.15
+                alpha: Math.random() * 0.85 + 0.15,
+                type: 'galaxy'
+            });
+        }
+
+        // Partículas proyectadas hacia arriba en forma de "V"
+        const vParticles = [];
+        for (let i = 0; i < 400; i++) {
+            const side = Math.random() < 0.5 ? -1 : 1;
+            const progress = Math.random();
+            const angleDeg = (side === -1 ? 125 : 55) + (Math.random() - 0.5) * 12;
+            const rad = (angleDeg * Math.PI) / 180;
+            const speed = Math.random() * 1.5 + 0.5;
+
+            vParticles.push({
+                x: 0,
+                y: 0,
+                vx: Math.cos(rad) * speed * 250,
+                vy: -Math.sin(rad) * speed * 250,
+                progress: Math.random(),
+                size: Math.random() * 3 + 1,
+                color: Math.random() < 0.8 ? '#ff00a0' : '#ff99e6'
             });
         }
 
         function drawGalaxy() {
-            ctx.fillStyle = 'rgba(1, 1, 3, 0.22)';
+            ctx.fillStyle = 'rgba(2, 1, 5, 0.25)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
+            const centerY = canvas.height / 2 + 80; // Centro desplazado levemente abajo para equilibrar la V
 
             ctx.globalCompositeOperation = 'screen';
-            const nebula = ctx.createRadialGradient(centerX, centerY, 80, centerX, centerY, canvas.width * 0.46);
-            nebula.addColorStop(0, 'rgba(255, 170, 30, 0.28)');
-            nebula.addColorStop(0.3, 'rgba(170, 40, 240, 0.18)');
-            nebula.addColorStop(0.65, 'rgba(20, 70, 190, 0.1)');
-            nebula.addColorStop(1, 'rgba(0, 0, 0, 0)');
-            ctx.fillStyle = nebula;
+
+            // Resplandor central dorado/blanco brillante
+            const coreGlow = ctx.createRadialGradient(centerX, centerY, 5, centerX, centerY, 180);
+            coreGlow.addColorStop(0, 'rgba(255, 255, 200, 1)');
+            coreGlow.addColorStop(0.15, 'rgba(255, 200, 0, 0.9)');
+            coreGlow.addColorStop(0.4, 'rgba(255, 0, 128, 0.5)');
+            coreGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            ctx.fillStyle = coreGlow;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Renderizar partículas del disco galáctico inclinado en 3D (Eje Y comprimido)
+            const tiltY = 0.28; // Compresión vertical para efecto de disco en perspectiva
 
             stars.forEach(star => {
                 star.angle += star.speed;
-                const currentX = centerX + Math.cos(star.angle) * star.distance;
-                const currentY = centerY + Math.sin(star.angle) * star.distance;
+                const rawX = Math.cos(star.angle) * star.distance;
+                const rawY = Math.sin(star.angle) * star.distance;
+
+                const currentX = centerX + rawX;
+                const currentY = centerY + rawY * tiltY;
 
                 ctx.fillStyle = star.color;
                 ctx.globalAlpha = star.alpha;
                 ctx.beginPath();
                 ctx.arc(currentX, currentY, star.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            // Renderizar el haz de luz en forma de "V" superior
+            vParticles.forEach(p => {
+                p.progress += 0.005;
+                if (p.progress > 1) p.progress = 0;
+
+                const currentX = centerX + p.vx * p.progress;
+                const currentY = centerY + p.vy * p.progress;
+
+                ctx.fillStyle = p.color;
+                ctx.globalAlpha = (1 - p.progress) * 0.9;
+                ctx.beginPath();
+                ctx.arc(currentX, currentY, p.size, 0, Math.PI * 2);
                 ctx.fill();
             });
 
@@ -305,7 +302,7 @@
         }
         drawGalaxy();
 
-        /* GIRASOL REALISTA VECTORIAL DETALLADO */
+        /* GIRASOL REALISTA DETALLADO */
         function getSunflowerSVG() {
             return `
             <svg class="sunflower-svg" viewBox="0 0 100 100">
@@ -327,14 +324,12 @@
                         <stop offset="100%" stop-color="#fff176"/>
                     </linearGradient>
                 </defs>
-                <!-- Hojas verdes de fondo -->
                 <g fill="#2e7d32" opacity="0.9">
                     <path d="M 50 50 Q 15 15 10 45 Q 35 65 50 50 Z" />
                     <path d="M 50 50 Q 85 15 90 45 Q 65 65 50 50 Z" />
                     <path d="M 50 50 Q 15 85 45 90 Q 65 65 50 50 Z" />
                     <path d="M 50 50 Q 85 85 90 55 Q 65 35 50 50 Z" />
                 </g>
-                <!-- Capa trasera de pétalos -->
                 <g fill="url(#petalGrad2)">
                     <ellipse cx="50" cy="8" rx="4" ry="18"/>
                     <ellipse cx="50" cy="92" rx="4" ry="18"/>
@@ -345,7 +340,6 @@
                     <ellipse cx="20" cy="80" rx="4.5" ry="18" transform="rotate(45 20 80)"/>
                     <ellipse cx="80" cy="20" rx="4.5" ry="18" transform="rotate(45 80 20)"/>
                 </g>
-                <!-- Capa delantera de pétalos -->
                 <g fill="url(#petalGrad1)">
                     <ellipse cx="50" cy="12" rx="4" ry="16" transform="rotate(15 50 12)"/>
                     <ellipse cx="50" cy="88" rx="4" ry="16" transform="rotate(15 50 88)"/>
@@ -356,7 +350,6 @@
                     <ellipse cx="24" cy="76" rx="4" ry="16" transform="rotate(60 24 76)"/>
                     <ellipse cx="76" cy="24" rx="4" ry="16" transform="rotate(60 76 24)"/>
                 </g>
-                <!-- Centro realista con semillas -->
                 <circle cx="50" cy="50" r="19" fill="url(#centerGrad)"/>
                 <circle cx="50" cy="50" r="16" fill="none" stroke="#aa5500" stroke-width="2" stroke-dasharray="3,2"/>
                 <circle cx="50" cy="50" r="11" fill="none" stroke="#773300" stroke-width="2" stroke-dasharray="2,2"/>
@@ -365,23 +358,22 @@
         }
 
         const words = [
-            "Mi sol", "Mi amor", "Mi destino", "Mi cielo", "Esperanza", 
-            "Libertad", "Felicidad", "Pasión", "Reina", "Mi razón", 
-            "Eternidad", "Brillas", "Sueños", "Mi flor", "Contigo", 
-            "Mi calma", "Mi universo", "Dulzura", "Ternura", "Mi fiesta"
+            "INFINITO ∞", "SIEMPRE", "MI CORAZÓN ES TUYO", "CONTIGO SIEMPRE", 
+            "AMOR ETERNO", "MI SOL", "MI UNIVERSO", "TE AMO", "ERES MI CIELO"
         ];
 
-        const totalItems = 48;
+        /* ELEMENTOS ORBITANDO EN EL DISCO INCLINADO 3D */
+        const totalItems = 32;
         const orbitingItems = [];
-        const minRadius = 180;
-        const maxRadius = spaceContainer.clientWidth * 0.44;
+        const minRadius = 220;
+        const maxRadius = spaceContainer.clientWidth * 0.42;
 
         for (let i = 0; i < totalItems; i++) {
             const item = document.createElement('div');
             item.className = 'floating-item';
 
             const word = words[Math.floor(Math.random() * words.length)];
-            const isHighlight = Math.random() < 0.25;
+            const isHighlight = word.includes("INFINITO") || word.includes("SIEMPRE");
 
             item.innerHTML = `
                 ${getSunflowerSVG()}
@@ -392,8 +384,7 @@
 
             const radius = minRadius + Math.random() * (maxRadius - minRadius);
             const initialAngle = Math.random() * Math.PI * 2;
-            const direction = Math.random() < 0.85 ? 1 : -1;
-            const speed = (0.0003 + (1 / radius) * 0.12) * direction;
+            const speed = (0.0003 + (1 / radius) * 0.12);
             const scale = 0.75 + Math.random() * 0.45;
 
             orbitingItems.push({
@@ -407,22 +398,29 @@
 
         function animateOrbit() {
             const centerX = spaceContainer.clientWidth / 2;
-            const centerY = spaceContainer.clientHeight / 2;
+            const centerY = spaceContainer.clientHeight / 2 + 80;
+            const tiltY = 0.28; // Mismo factor de inclinación que la galaxia
 
             orbitingItems.forEach(item => {
                 item.angle += item.speed;
 
-                const x = centerX + Math.cos(item.angle) * item.radius;
-                const y = centerY + Math.sin(item.angle) * item.radius;
+                const rawX = Math.cos(item.angle) * item.radius;
+                const rawY = Math.sin(item.angle) * item.radius;
 
-                item.element.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(${item.scale})`;
+                const x = centerX + rawX;
+                const y = centerY + rawY * tiltY;
+
+                // Escala según la posición en profundidad (z-index simulated)
+                const depthScale = item.scale * (0.8 + (rawY / item.radius) * 0.2);
+
+                item.element.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(${depthScale})`;
             });
 
             requestAnimationFrame(animateOrbit);
         }
         animateOrbit();
 
-        /* FÍSICA DE NAVEGACIÓN: ARRASTRE Y PINCH-TO-ZOOM (ACERCAR / ALEJAR) */
+        /* ARRASTRE Y PINCH-TO-ZOOM EN MÓVIL Y PC */
         let isDragging = false;
         let startX = 0, startY = 0;
         let currentX = -spaceContainer.clientWidth / 3;
@@ -450,7 +448,6 @@
             );
         }
 
-        /* EVENTOS TÁCTILES Y MOUSE */
         viewport.addEventListener('touchstart', (e) => {
             if (e.touches.length === 1) {
                 isDragging = true;
@@ -469,7 +466,7 @@
             } else if (e.touches.length === 2 && initialPinchDist) {
                 const newDist = getPinchDistance(e);
                 const factor = newDist / initialPinchDist;
-                targetScale = Math.min(Math.max(scale * factor, 0.4), 2.5); // Limita el zoom entre 0.4x y 2.5x
+                targetScale = Math.min(Math.max(scale * factor, 0.4), 2.5);
                 initialPinchDist = newDist;
             }
         }, { passive: true });
@@ -479,14 +476,12 @@
             if (e.touches.length === 0) isDragging = false;
         });
 
-        // Zoom con rueda de ratón para PC
         viewport.addEventListener('wheel', (e) => {
             e.preventDefault();
             const zoomAmount = e.deltaY * -0.001;
             targetScale = Math.min(Math.max(targetScale + zoomAmount, 0.4), 2.5);
         }, { passive: false });
 
-        // Arrastre con ratón para PC
         viewport.addEventListener('mousedown', (e) => {
             isDragging = true;
             startX = e.clientX - targetX;
